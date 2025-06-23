@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,14 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from '@/components/ui/use-toast';
 import { UserRole } from '@/contexts/AuthContext';
+
+
+// firebase 
+import {fetchSignInMethodsForEmail, sendSignInLinkToEmail} from 'firebase/auth';
+
+import { selectIsAuthenticated } from '@/redux/features/auth/authSlice';
+import { useSelector } from 'react-redux';
+import {auth} from '../../config/firebase/config';
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -18,6 +26,26 @@ const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+
+
+  const isLoggedIn = useSelector(selectIsAuthenticated);
+    if (isLoggedIn) {
+            toast({
+        title: 'Already logged in',
+        description: 'You are already logged in. Please log out to register a new account.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }  
+
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/dashboard');
+      }
+
+    },[isLoggedIn, navigate])
+    
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +60,7 @@ const RegisterForm: React.FC = () => {
     }
     
     setIsLoading(true);
+
     
     try {
       await register(email, password, name, role);

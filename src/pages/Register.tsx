@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/layout/Layout';
 import RegisterForm from '@/components/auth/RegisterForm';
 
+
 const Register: React.FC = () => {
   const { user } = useAuth();
   
