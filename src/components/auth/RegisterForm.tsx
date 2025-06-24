@@ -4,21 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
-import { UserRole } from '@/contexts/AuthContext';
 
 import { selectIsAuthenticated } from '@/redux/features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { signUp } from '@/config/firebase/authenticate';
 import authService from '@/lib/authService';
 import { PasswordStrengthIndicator } from './PasswordStrengthIndicator';
-import { Check, CheckCheck, X } from 'lucide-react';
+import { CheckCheck, X } from 'lucide-react';
+import { sendEmailVerification } from 'firebase/auth';
+import { redirectUrl } from '@/lib/envService';
 
 const RegisterForm: React.FC = () => {
-  const [name, setName] = useState('');
   const email = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState<UserRole>('student');
+  const [confirmPassword, setConfirmPassword] = useState('');  
   const [isLoading, setIsLoading] = useState(false);
   const [passwordValue, setPasswordValue] = useState<string>("")
   const [score, setScore] = useState<number>(0)
@@ -26,6 +25,14 @@ const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
 
   const isLoggedIn = useSelector(selectIsAuthenticated);
+
+ 
+  const actionCodeSettings = {
+    url:  redirectUrl,
+    handleCodeInApp: true
+  }
+
+
   if (isLoggedIn) {
     toast({
       title: 'Already logged in',
@@ -72,11 +79,14 @@ const RegisterForm: React.FC = () => {
 
     if (email.current && password.current) {
       const response = await signUp(email.current.value, password.current.value);
-      if (response?.success) {
+
+      if (response?.success) {          
+        await sendEmailVerification(response?.user?.user, actionCodeSettings)
+
         toast({
           title: "Account Created",
           description: "Please check your email for the verification link.",
-          
+
         })
         navigate("/login")
       }
@@ -98,16 +108,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={createAnAccount} className="space-y-6">
-      {/* <div className="space-y-2">
-        <Label htmlFor="name">Full Name</Label>
-        <Input
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="John Doe"
-          required
-        />
-      </div> */}
+      
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -133,8 +134,8 @@ const RegisterForm: React.FC = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className='flex flex-row items-center gap-2'>Confirm Password{password?.current?.value === confirmPassword ?
-          <CheckCheck size={14} color='#22c55e' /> : <X size={14} color='#ef4444' />}
+        <Label htmlFor="confirmPassword" className='flex flex-row items-center gap-2 justify-between'>Confirm Password{password?.current?.value === confirmPassword ?
+          <CheckCheck size={15} color='#22c55e' /> : <X size={15} color='#ef4444' />}
         </Label>
         <Input
           id="confirmPassword"
@@ -148,20 +149,7 @@ const RegisterForm: React.FC = () => {
       </div>
 
       {passwordValue !== "" && <PasswordStrengthIndicator score={score} />}
-      {/* 
-      <div className="space-y-2">
-        <Label>I am registering as a:</Label>
-        <RadioGroup value={role} onValueChange={(value) => setRole(value as UserRole)} className="flex space-x-4">
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="student" id="student" />
-            <Label htmlFor="student" className="cursor-pointer">Student</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="teacher" id="teacher" />
-            <Label htmlFor="teacher" className="cursor-pointer">Teacher</Label>
-          </div>
-        </RadioGroup>
-      </div> */}
+     
 
       <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? 'Creating Account...' : 'Create Account'}

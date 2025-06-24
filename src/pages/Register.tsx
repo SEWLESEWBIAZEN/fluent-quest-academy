@@ -7,13 +7,7 @@ import RegisterForm from '@/components/auth/RegisterForm';
 
 
 const Register: React.FC = () => {
-  const { user } = useAuth();
-  
-  // Redirect to dashboard if already logged in
-  if (user) {
-    return <Navigate to="/dashboard" replace />;
-  }
-  
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">

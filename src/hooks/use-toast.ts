@@ -125,11 +125,8 @@ export const reducer = (state: State, action: Action): State => {
       }
   }
 }
-
 const listeners: Array<(state: State) => void> = []
-
 let memoryState: State = { toasts: [] }
-
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action)
   listeners.forEach((listener) => {
@@ -138,7 +135,6 @@ function dispatch(action: Action) {
 }
 
 type Toast = Omit<ToasterToast, "id">
-
 function toast({ ...props }: Toast) {
   const id = genId()
 

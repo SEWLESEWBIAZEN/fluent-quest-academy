@@ -16,6 +16,8 @@ import CourseDetail from "./pages/CourseDetail";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
+import CompleteRegistration from "./pages/CompleteRegistration";
+
 
 const queryClient = new QueryClient();
 
@@ -25,12 +27,13 @@ const App = () => (
       <AuthProvider>
         <CourseProvider>
           <Toaster />
-          <Sonner />
+          <Sonner position="bottom-right" richColors className="" closeButton/>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/register/complete" element={<CompleteRegistration />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:id" element={<CourseDetail />} />
               <Route path="/dashboard" element={<Dashboard />} />

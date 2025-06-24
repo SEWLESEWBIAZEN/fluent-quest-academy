@@ -1,6 +1,5 @@
-// context/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useReducer } from "react";
-import {User, AuthState} from "../lib/types"
+import { User, AuthState, UserRole } from "../lib/types"
 import { auth } from "../config/firebase/config"; // Adjust the import path as necessary
 import {
   signInWithEmailAndPassword,
@@ -12,8 +11,8 @@ import {
   User as FirebaseUser
 } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
-
-export type UserRole = "student" | "teacher" | "admin";
+import { apiUrl } from "@/lib/envService";
+import axios from "axios";
 
 const initialState: AuthState = {
   user: null,
@@ -81,17 +80,47 @@ interface AuthContextType extends AuthState {
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+async function getRoleByEmail(email, token) {
+  let roleOfUser = ""
+  const response = await axios.get(`${apiUrl}/users/user-by-email/${email}`, {
+    headers: {
+      "authToken": token
+    }
+  })
+
+  roleOfUser = response?.data?.data?.role || ""
+  return roleOfUser
+}
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { toast } = useToast();
 
-  const toUser = (firebaseUser: FirebaseUser): User => ({
-    id: firebaseUser.uid,
-    email: firebaseUser.email!,
-    name: firebaseUser.displayName || "User",
-    role:'admin',
-    twoFactorEnabled:false
-  });
+  const toUser = async (firebaseUser: FirebaseUser): Promise<User> => {
+    let roleString = null
+    let token = null
+    try {
+      token = await firebaseUser.getIdToken();
+      roleString = await getRoleByEmail(firebaseUser?.email || "", token)
+    }
+    catch (error) {
+
+    }
+    finally {
+      const role = Object.values(UserRole).includes(roleString as UserRole)
+        ? (roleString as UserRole)
+        : UserRole.Guest; // fallback/default if needed
+
+      return {
+        id: firebaseUser.uid,
+        email: firebaseUser.email!,
+        name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "User",
+        role: role, // you may want to load this from Firestore or claims
+        twoFactorEnabled: false, // adjust based on your logic
+        accessToken: token,
+        registered:role === UserRole.Guest?false:true
+      };
+    }
+  };
 
   const monitorSession = (expiryDate: Date) => {
     const now = new Date();
@@ -141,13 +170,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       const expiryDate = new Date(Date.now() + 30 * 60 * 1000); // 30 min session for example
       localStorage.setItem("session_expiry", expiryDate.toISOString());
-
       dispatch({
         type: "LOGIN_SUCCESS",
-        payload: { user: toUser(user), expiryDate },
+        payload: { user: await toUser(user), expiryDate },
       });
-
       monitorSession(expiryDate);
+
     } catch (error: any) {
       dispatch({ type: "LOGIN_FAILURE", payload: error.message || "Login failed" });
       throw error;
@@ -183,11 +211,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const expiryStr = localStorage.getItem("session_expiry") || sessionStorage.getItem("session_expiry");
         const expiryDate = expiryStr ? new Date(expiryStr) : new Date(Date.now() + 30 * 60 * 1000);
-        dispatch({ type: "LOGIN_SUCCESS", payload: { user: toUser(firebaseUser), expiryDate } });
+        dispatch({ type: "LOGIN_SUCCESS", payload: { user: await toUser(firebaseUser), expiryDate } });
         monitorSession(expiryDate);
       } else {
         dispatch({ type: "LOGOUT" });
@@ -198,33 +226,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const verifyTwoFactor = async (code: string): Promise<boolean> => {
-  // Your logic to verify the code with Firebase or custom backend
-  try {
-    const response = await fetch('/api/verify-2fa', {
-      method: 'POST',
-      body: JSON.stringify({ code }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    // Your logic to verify the code with Firebase or custom backend
+    try {
+      const response = await fetch('/api/verify-2fa', {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (!response.ok) return false;
+      if (!response.ok) return false;
 
-    const data = await response.json();
-    return data.success;
-  } catch (error) {
-    console.error("2FA verification error:", error);
-    return false;
-  }
-};
+      const data = await response.json();
+      return data.success;
+    } catch (error) {
+      console.error("2FA verification error:", error);
+      return false;
+    }
+  };
 
 
   const value: AuthContextType = {
     ...state,
-     login,
-  logout,
-  refreshSession,
-  clearError,
-  getSessionTimeRemaining,  
-  verifyTwoFactor,
+    login,
+    logout,
+    refreshSession,
+    clearError,
+    getSessionTimeRemaining,
+    verifyTwoFactor,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

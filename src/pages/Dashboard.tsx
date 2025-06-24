@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,7 +17,12 @@ const Dashboard: React.FC = () => {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-  
+    
+  if (!user?.registered) {
+    return <Navigate to="/register/complete" replace />;
+  }
+ 
+    
   // Get enrolled courses
   const enrolledCourses =[]
   //  courses.filter(course => 

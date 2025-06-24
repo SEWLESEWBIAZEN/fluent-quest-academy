@@ -19,13 +19,13 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);   
 
     try {
-      await login(email, password,true);
+      const loginStatus = await login(email, password,true);     
       toast({
         title: '🎉 Welcome back!',
         description: 'You have successfully logged in.',
       });
       navigate('/dashboard');
-    } catch (error) {
+    } catch (error) {    
       toast({
         title: 'Login failed',
         description: (error instanceof Error) ? error.message : 'Please check your credentials and try again.',
@@ -84,31 +84,32 @@ const LoginForm: React.FC = () => {
             variant="outline" 
             size="sm"
             onClick={() => {
-              setEmail('student@example.com');
-              setPassword('password');
+              setEmail('admin.demo@fq.com');
+              setPassword('Admin@01');
+            }}
+          >
+            Admin Demo
+          </Button>
+          <Button 
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setEmail('student.demo@fq.com');
+              setPassword('Student@01');
             }}
           >
             Student Demo
           </Button>
+         
           <Button 
             variant="outline"
             size="sm"
             onClick={() => {
-              setEmail('teacher@example.com');
-              setPassword('password');
+              setEmail('teacher.demo@fq.com');
+              setPassword('Teacher@01');
             }}
           >
             Teacher Demo
-          </Button>
-          <Button 
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              setEmail('admin@example.com');
-              setPassword('password');
-            }}
-          >
-            Admin Demo
           </Button>
         </div>
       </div>

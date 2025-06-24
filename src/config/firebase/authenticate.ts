@@ -45,11 +45,12 @@ export async function signInWithGoogle(): Promise<any> {
     }
 }
 
-export async function signUp(email: string, password: string): Promise<{success:boolean, message: string}> {
+export async function signUp(email: string, password: string): Promise<{success:boolean, message: string, user:any}> {
     let errorMessage = ""
     try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        return ({ success: true, message:"Account created successfully!" });
+        const user = await createUserWithEmailAndPassword(auth, email, password);
+    
+        return ({ success: true, message:"Account created successfully!" ,user:user});
     } catch (e) {
         switch (e.code) {
             case 'auth/email-already-in-use':
@@ -68,7 +69,7 @@ export async function signUp(email: string, password: string): Promise<{success:
                 errorMessage = "Something went wrong!"
         }
         
-        return ({ success: false, message:errorMessage });
+        return ({ success: false, message:errorMessage,user:null });
     }
 }
 
