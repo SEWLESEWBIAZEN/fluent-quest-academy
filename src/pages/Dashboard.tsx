@@ -11,24 +11,26 @@ import { Progress } from '@/components/ui/progress';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+
   const { courses, getUserProgress } = useCourse();
   
-  // Redirect to login if not authenticated
+ // Redirect to login if not authenticated
   if (!user) {
     return <Navigate to="/login" replace />;
   }
   
   // Get enrolled courses
-  const enrolledCourses = courses.filter(course => 
-    user.enrolledCourses.includes(course.id)
-  );
+  const enrolledCourses =[]
+  //  courses.filter(course => 
+  //   user?.enrolledCourses.includes(course.id)
+  // );
 
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-12">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome, {user.name}!</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome, {user?.name}!</h1>
             <p className="text-gray-600">Track your progress and continue learning</p>
           </div>
           <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
@@ -36,14 +38,14 @@ const Dashboard: React.FC = () => {
               <span className="text-yellow-500 text-lg mr-2">🔥</span>
               <div>
                 <p className="text-sm text-gray-600">Current streak</p>
-                <p className="font-bold text-gray-800">{user.streakDays} days</p>
+                {/* <p className="font-bold text-gray-800">{user.streakDays} days</p> */}
               </div>
             </div>
             <div className="flex items-center bg-blue-50 px-4 py-2 rounded-lg">
               <span className="text-blue-500 text-lg mr-2">⭐</span>
               <div>
                 <p className="text-sm text-gray-600">Experience points</p>
-                <p className="font-bold text-gray-800">{user.points} XP</p>
+                {/* <p className="font-bold text-gray-800">{user.points} XP</p> */}
               </div>
             </div>
           </div>

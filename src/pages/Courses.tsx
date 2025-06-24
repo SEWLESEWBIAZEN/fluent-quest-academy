@@ -6,13 +6,23 @@ import CourseCard from '@/components/courses/CourseCard';
 import LanguageFilter from '@/components/courses/LanguageFilter';
 import LevelFilter from '@/components/courses/LevelFilter';
 import { Input } from '@/components/ui/input';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Courses: React.FC = () => {
   const { courses, languages } = useCourse();
   const [search, setSearch] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<CourseLevel | null>(null);
+
+  const {user} =useAuth();
   
+  // Redirect to login if not authenticated
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
+    
+    
   const filteredCourses = courses.filter((course) => {
     // Filter by search term
     if (search && !course.title.toLowerCase().includes(search.toLowerCase()) && 

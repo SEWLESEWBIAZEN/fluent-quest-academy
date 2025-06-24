@@ -16,10 +16,10 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
+    setIsLoading(true);   
+
     try {
-      await login(email, password);
+      await login(email, password,true);
       toast({
         title: '🎉 Welcome back!',
         description: 'You have successfully logged in.',

@@ -1,147 +1,236 @@
-
-import React, { createContext, useContext, useState, useEffect } from "react";
+// context/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useReducer } from "react";
+import {User, AuthState} from "../lib/types"
+import { auth } from "../config/firebase/config"; // Adjust the import path as necessary
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  onAuthStateChanged,
+  User as FirebaseUser
+} from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
 
 export type UserRole = "student" | "teacher" | "admin";
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  avatar?: string;
-  streakDays: number;
-  points: number;
-  enrolledCourses: string[];
-}
-
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  register: (email: string, password: string, name: string, role: UserRole) => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Mock user data - In a real app, this would come from a database
-const MOCK_USERS: User[] = [
-  {
-    id: '1',
-    name: 'Demo Student',
-    email: 'student@example.com',
-    role: 'student',
-    avatar: 'https://ui-avatars.com/api/?name=Demo+Student',
-    streakDays: 5,
-    points: 120,
-    enrolledCourses: ['1', '3'],
-  },
-  {
-    id: '2',
-    name: 'Demo Teacher',
-    email: 'teacher@example.com',
-    role: 'teacher',
-    avatar: 'https://ui-avatars.com/api/?name=Demo+Teacher',
-    streakDays: 15,
-    points: 450,
-    enrolledCourses: [],
-  },
-  {
-    id: '3',
-    name: 'Admin User',
-    email: 'admin@example.com',
-    role: 'admin',
-    avatar: 'https://ui-avatars.com/api/?name=Admin+User',
-    streakDays: 30,
-    points: 1200,
-    enrolledCourses: [],
-  }
-];
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Check if user is stored in local storage
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
-  }, []);
-
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // Simulating API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Find user in mock data
-      const foundUser = MOCK_USERS.find(u => u.email === email);
-      if (!foundUser) {
-        throw new Error("Invalid credentials");
-      }
-      
-      // In a real app, you would validate the password here
-      
-      setUser(foundUser);
-      localStorage.setItem("user", JSON.stringify(foundUser));
-    } catch (error) {
-      console.error("Login error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const register = async (email: string, password: string, name: string, role: UserRole) => {
-    setIsLoading(true);
-    try {
-      // Simulating API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Check if user already exists
-      if (MOCK_USERS.some(u => u.email === email)) {
-        throw new Error("User already exists");
-      }
-      
-      // Create new user (in a real app, this would be saved to a database)
-      const newUser: User = {
-        id: `${MOCK_USERS.length + 1}`,
-        name,
-        email,
-        role,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}`,
-        streakDays: 0,
-        points: 0,
-        enrolledCourses: [],
-      };
-      
-      // For demo purposes, we'll just set the user state
-      setUser(newUser);
-      localStorage.setItem("user", JSON.stringify(newUser));
-    } catch (error) {
-      console.error("Registration error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, register }}>
-      {children}
-    </AuthContext.Provider>
-  );
+const initialState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  isLoading: true,
+  error: null,
+  sessionExpiry: null,
 };
 
-export const useAuth = () => {
+type AuthAction =
+  | { type: "LOADING" }
+  | { type: "LOGIN_SUCCESS"; payload: { user: User; expiryDate: Date } }
+  | { type: "LOGIN_FAILURE"; payload: string }
+  | { type: "LOGOUT" }
+  | { type: "SESSION_EXPIRED" }
+  | { type: "REFRESH_SESSION"; payload: Date }
+  | { type: "CLEAR_ERROR" };
+
+function authReducer(state: AuthState, action: AuthAction): AuthState {
+  switch (action.type) {
+    case "LOADING":
+      return { ...state, isLoading: true, error: null };
+    case "LOGIN_SUCCESS":
+      return {
+        ...state,
+        user: action.payload.user,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+        sessionExpiry: action.payload.expiryDate,
+      };
+    case "LOGIN_FAILURE":
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: action.payload,
+        sessionExpiry: null,
+      };
+    case "LOGOUT":
+      return { ...initialState, isLoading: false };
+    case "SESSION_EXPIRED":
+      return {
+        ...initialState,
+        isLoading: false,
+        error: "Your session has expired. Please log in again.",
+      };
+    case "REFRESH_SESSION":
+      return { ...state, sessionExpiry: action.payload };
+    case "CLEAR_ERROR":
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+}
+
+interface AuthContextType extends AuthState {
+  login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
+  logout: () => void;
+  refreshSession: () => void;
+  clearError: () => void;
+  getSessionTimeRemaining: () => number;
+  verifyTwoFactor: (code: string) => Promise<boolean>;
+}
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { toast } = useToast();
+
+  const toUser = (firebaseUser: FirebaseUser): User => ({
+    id: firebaseUser.uid,
+    email: firebaseUser.email!,
+    name: firebaseUser.displayName || "User",
+    role:'admin',
+    twoFactorEnabled:false
+  });
+
+  const monitorSession = (expiryDate: Date) => {
+    const now = new Date();
+    const timeUntilExpiry = expiryDate.getTime() - now.getTime();
+    const warningTime = 2 * 60 * 1000;
+
+    if (timeUntilExpiry <= 0) {
+      dispatch({ type: "SESSION_EXPIRED" });
+      logout();
+      return;
+    }
+
+    if (timeUntilExpiry > warningTime) {
+      setTimeout(() => {
+        toast({
+          title: "Session Expiring Soon",
+          description: "Your session will expire in 2 minutes. Click to extend.",
+          action: (
+            <button
+              onClick={refreshSession}
+              className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+            >
+              Extend Session
+            </button>
+          ),
+        });
+      }, timeUntilExpiry - warningTime);
+    }
+
+    setTimeout(() => {
+      dispatch({ type: "SESSION_EXPIRED" });
+      logout();
+      toast({
+        title: "Session Expired",
+        description: "Please log in again.",
+        variant: "destructive",
+      });
+    }, timeUntilExpiry);
+  };
+
+  const login = async (email: string, password: string, rememberMe: boolean) => {
+    try {
+      dispatch({ type: "LOADING" });
+
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const expiryDate = new Date(Date.now() + 30 * 60 * 1000); // 30 min session for example
+      localStorage.setItem("session_expiry", expiryDate.toISOString());
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: { user: toUser(user), expiryDate },
+      });
+
+      monitorSession(expiryDate);
+    } catch (error: any) {
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message || "Login failed" });
+      throw error;
+    }
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("session_expiry");
+    dispatch({ type: "LOGOUT" });
+  };
+
+  const refreshSession = () => {
+    const expiryDate = new Date(Date.now() + 30 * 60 * 1000); // Extend another 30 minutes
+    localStorage.setItem("session_expiry", expiryDate.toISOString());
+    dispatch({ type: "REFRESH_SESSION", payload: expiryDate });
+    monitorSession(expiryDate);
+    toast({
+      title: "Session Extended",
+      description: "Your session has been extended.",
+    });
+  };
+
+  const clearError = () => {
+    dispatch({ type: "CLEAR_ERROR" });
+  };
+
+  const getSessionTimeRemaining = (): number => {
+    const expiryStr = localStorage.getItem("session_expiry") || sessionStorage.getItem("session_expiry");
+    if (!expiryStr) return 0;
+    const expiry = new Date(expiryStr).getTime();
+    return Math.max(0, expiry - Date.now());
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        const expiryStr = localStorage.getItem("session_expiry") || sessionStorage.getItem("session_expiry");
+        const expiryDate = expiryStr ? new Date(expiryStr) : new Date(Date.now() + 30 * 60 * 1000);
+        dispatch({ type: "LOGIN_SUCCESS", payload: { user: toUser(firebaseUser), expiryDate } });
+        monitorSession(expiryDate);
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const verifyTwoFactor = async (code: string): Promise<boolean> => {
+  // Your logic to verify the code with Firebase or custom backend
+  try {
+    const response = await fetch('/api/verify-2fa', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) return false;
+
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error("2FA verification error:", error);
+    return false;
+  }
+};
+
+
+  const value: AuthContextType = {
+    ...state,
+     login,
+  logout,
+  refreshSession,
+  clearError,
+  getSessionTimeRemaining,  
+  verifyTwoFactor,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
