@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
-import { User, AuthState, UserRole } from "../lib/types"
-import { auth } from "../config/firebase/config"; // Adjust the import path as necessary
+import { User, AuthState, UserRole, UserData } from "../lib/types"
+
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -13,6 +13,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { apiUrl } from "@/lib/envService";
 import axios from "axios";
+import { auth } from "@/config/firebase/config";
 
 const initialState: AuthState = {
   user: null,
@@ -81,33 +82,34 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 async function getRoleByEmail(email, token) {
-  let roleOfUser = ""
+  let userInfo = {}
   const response = await axios.get(`${apiUrl}/users/user-by-email/${email}`, {
     headers: {
       "authToken": token
     }
   })
 
-  roleOfUser = response?.data?.data?.role || ""
-  return roleOfUser
+  userInfo = response?.data?.data || {}
+  return userInfo
 }
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { toast } = useToast();
 
   const toUser = async (firebaseUser: FirebaseUser): Promise<User> => {
-    let roleString = null
+    let userData:UserData = null
     let token = null
     try {
       token = await firebaseUser.getIdToken();
-      roleString = await getRoleByEmail(firebaseUser?.email || "", token)
+      userData = await getRoleByEmail(firebaseUser?.email || "", token) as UserData
+      
     }
     catch (error) {
 
     }
     finally {
-      const role = Object.values(UserRole).includes(roleString as UserRole)
-        ? (roleString as UserRole)
+      const role = Object.values(UserRole).includes(userData?.role as UserRole)
+        ? (userData?.role as UserRole)
         : UserRole.Guest; // fallback/default if needed
 
       return {
@@ -117,7 +119,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role: role, // you may want to load this from Firestore or claims
         twoFactorEnabled: false, // adjust based on your logic
         accessToken: token,
-        registered:role === UserRole.Guest?false:true
+        registered:role === UserRole.Guest?false:true,
+        points:userData?.points || 0,
+        days:userData?.streakDays || 0
       };
     }
   };

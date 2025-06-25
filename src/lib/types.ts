@@ -10,7 +10,9 @@ export interface User {
   lastLogin?: Date;
   twoFactorEnabled: boolean;
   accessToken:string; 
-  registered:boolean
+  registered:boolean;
+  days?:number;
+  points?:number;
 }
 
 export interface AuthState {
@@ -28,4 +30,21 @@ export enum UserRole {
   Admin = "admin",
   User ='user',
   Guest = 'guest'
+}
+
+export type UserData ={
+        _id: string,
+        username: string,
+        name: string,
+        role: string,
+        email: string,
+        phoneNumber: string,
+        avatar: string,
+        streakDays: number,
+        points: number,
+        enrolledCourses: any[],
+        verified: boolean,
+        rating: number,
+        createdAt: string,
+        updatedAt: string
 }

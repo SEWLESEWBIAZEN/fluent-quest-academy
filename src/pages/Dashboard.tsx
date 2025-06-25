@@ -42,14 +42,14 @@ const Dashboard: React.FC = () => {
               <span className="text-yellow-500 text-lg mr-2">🔥</span>
               <div>
                 <p className="text-sm text-gray-600">Current streak</p>
-                {/* <p className="font-bold text-gray-800">{user.streakDays} days</p> */}
+                <p className="font-bold text-gray-800">{user?.days} days</p>
               </div>
             </div>
             <div className="flex items-center bg-blue-50 px-4 py-2 rounded-lg">
               <span className="text-blue-500 text-lg mr-2">⭐</span>
               <div>
                 <p className="text-sm text-gray-600">Experience points</p>
-                {/* <p className="font-bold text-gray-800">{user.points} XP</p> */}
+                <p className="font-bold text-gray-800">{user.points} XP</p>
               </div>
             </div>
           </div>

@@ -44,7 +44,7 @@ const Header: React.FC = () => {
               <div className="hidden sm:flex mr-4 items-center">
                 <div className="flex items-center mr-4">
                   <span className="mr-1 text-yellow-500">🔥</span>
-                  <span className="text-sm font-medium">{user.streakDays} days</span>
+                  <span className="text-sm font-medium">{user.days} days</span>
                 </div>
                 <div className="flex items-center">
                   <span className="mr-1 text-brand-500">⭐</span>
