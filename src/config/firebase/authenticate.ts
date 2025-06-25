@@ -14,8 +14,9 @@ import {
     signOut,
     User
 } from "firebase/auth";
-import { auth } from "./config";
+
 import { toast } from "sonner";
+import { auth } from "./config";
 
 export async function signInWithGoogle(): Promise<any> {
     let errorMessage = ""
