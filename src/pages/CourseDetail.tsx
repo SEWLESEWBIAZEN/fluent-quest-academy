@@ -21,7 +21,7 @@ const CourseDetail: React.FC = () => {
     return <Navigate to="/courses" replace />;
   }
   
-  const isEnrolled = user?.enrolledCourses.includes(course.id);
+  const isEnrolled = user?.enrolledCourses?.includes(course.id);
   const progress = id ? getUserProgress(id) : 0;
   
   const handleEnroll = () => {

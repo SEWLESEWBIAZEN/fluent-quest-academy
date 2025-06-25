@@ -13,6 +13,7 @@ export interface User {
   registered:boolean;
   days?:number;
   points?:number;
+  enrolledCourses?:any[]
 }
 
 export interface AuthState {

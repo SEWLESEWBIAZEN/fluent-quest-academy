@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import Brand from './Brand';
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
@@ -20,12 +21,10 @@ const Header: React.FC = () => {
     <header className="border-b bg-white">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
-          <Link to="/" className="text-2xl font-bold text-brand-600 flex items-center">
-            <span className="mr-2">🌎</span>
-            <span>FluentQuest</span>
+          <Link to="/" className="text-2xl font-bold text-brand-600 flex items-end">
+            <Brand />
           </Link>
         </div>
-
         <nav className="hidden md:flex space-x-6 text-sm font-medium">
           <Link to="/courses" className="text-gray-600 hover:text-brand-600 transition-colors">
             Courses

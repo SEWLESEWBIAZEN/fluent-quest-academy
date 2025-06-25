@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Brand from './Brand';
 
 const Footer: React.FC = () => {
   return (
@@ -8,9 +9,8 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4 text-brand-600 flex items-center">
-              <span className="mr-2">🌎</span>
-              <span>FluentQuest</span>
+            <h3 className="font-bold text-lg mb-4 text-brand-600 flex items-end">
+              <Brand/>
             </h3>
             <p className="text-gray-600 mb-4">
               Master languages through interactive learning, skilled teachers, and gamified practice.
