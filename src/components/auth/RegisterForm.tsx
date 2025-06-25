@@ -84,8 +84,9 @@ const RegisterForm: React.FC = () => {
         await sendEmailVerification(response?.user?.user, actionCodeSettings)
 
         toast({
-          title: "Account Created",
+          title: " 🎉 Account Created",
           description: "Please check your email for the verification link.",
+          variant:"primary"
 
         })
         navigate("/login")

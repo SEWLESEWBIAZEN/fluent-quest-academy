@@ -1,23 +1,10 @@
 import UserRegistrationForm from '@/components/auth/UserRegistrationForm'
 import Layout from '@/components/layout/Layout'
 import { useAuth } from '@/contexts/AuthContext'
-import { useEffect } from 'react';
-import { redirect } from 'react-router-dom';
-import { toast } from 'sonner';
+
+
 const CompleteRegistration = () => {
-    const { user } = useAuth();
-   
-    useEffect(() => {
-        if (user?.registered) {
-            toast.success("Already Registred!")
-            redirect("/login")
-           
-        } else {
-            toast.info("Please complete your profile genuinely!")
-        }
-
-    }, [user])
-
+    const { user } = useAuth(); 
 
     return (
         <Layout>

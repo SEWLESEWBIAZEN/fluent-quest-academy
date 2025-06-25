@@ -6,10 +6,8 @@ import { Button } from '../ui/button'
 import axios from 'axios'
 import { apiUrl } from '@/lib/envService'
 import { UserRole } from '@/lib/types'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
-
-
+import { Navigate } from 'react-router-dom'
+import { toast } from '@/hooks/use-toast'
 
 const UserRegistrationForm = ({ user }: { user: any }) => {
   const [name, setName] = useState("")
@@ -19,14 +17,21 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
   const [avatar, setAvatar] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false);
   const [role, setRole] = useState<UserRole>(UserRole.Student);
-  const navigate = useNavigate()
+  
+  if (user?.registered) {    
+    toast({
+      title: "Success",
+      description: "Already Registred!",
+      variant: "primary"
+    })
+    return <Navigate to= "/dashboard" replace/>
+  } 
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     try {
       if (!user) throw new Error("User is not authenticated")
-        setIsLoading(true)
+      setIsLoading(true)
       const response = await axios.post(
         `${apiUrl}/users/register`,
         {
@@ -45,26 +50,30 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
       );
 
       if (response?.status === 201) {
-       user.registered = true
-        toast.success(response?.data?.message || "User Registration Complete");
+        user.registered = true
+        toast({
+          title: "🎉 Success",
+          description: response?.data?.message || "User Registration Complete",
+          variant: "primary"
+        });
         setIsLoading(false)
         return;
       }
 
       if (user?.email === email) {
-        toast.error("Use the same as sign up email.")
-        // toast({
-        //   title:"Use the same as sign up email.",
-        //   description:"The email you are going to use while completing user registration should be the same that used at first(signup)."
-        // })
+        toast({
+          title: "Error",
+          description: "Use the same as sign up email.",
+          variant: "destructive"
+        })
+
       }
-    } catch (error: any) {   
-      toast.error(error?.response?.data?.message || "User Registration Failed")
-      // toast({
-      //   title: "User Registration Failed",
-      //   description: error?.response?.data?.message || error.message || "Unknown error",
-      //   variant: "destructive",
-      // });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error?.response?.data?.message || error.message || "Unknown error",
+        variant: "destructive",
+      });
     }
   }
 

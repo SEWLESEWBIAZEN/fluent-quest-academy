@@ -101,8 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let token = null
     try {
       token = await firebaseUser.getIdToken();
-      userData = await getRoleByEmail(firebaseUser?.email || "", token) as UserData
-      
+      userData = await getRoleByEmail(firebaseUser?.email || "", token) as UserData      
     }
     catch (error) {
 
