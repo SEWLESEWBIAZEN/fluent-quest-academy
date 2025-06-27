@@ -108,4 +108,12 @@
   .language-level-advanced {
     @apply bg-purple-100 text-purple-800;
   }
+
+  .text-gradient-custom {
+    @apply bg-gradient-to-r from-purple-300 to-brand-900 bg-clip-text text-transparent;
+  }
+  .bg-gradient-custom {
+    @apply bg-gradient-to-r from-purple-300 to-brand-900;
+  }
+  
 }

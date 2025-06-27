@@ -17,6 +17,7 @@ import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 import CompleteRegistration from "./pages/CompleteRegistration";
+import UserProfilePage from "./pages/UserProfilePage";
 
 
 const queryClient = new QueryClient();
@@ -38,6 +39,8 @@ const App = () => (
               <Route path="/courses/:id" element={<CourseDetail />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/admin/courses" element={<AdminPanel />} />
+              <Route path="/profile" element={<UserProfilePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

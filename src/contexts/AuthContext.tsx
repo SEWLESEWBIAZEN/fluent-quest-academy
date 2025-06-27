@@ -113,6 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return {
         id: firebaseUser.uid,
+        userId:userData?._id || "",
         email: firebaseUser.email!,
         name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "User",
         role: role, // you may want to load this from Firestore or claims
