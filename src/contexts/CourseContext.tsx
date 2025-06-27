@@ -203,7 +203,7 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   });
 
   const enrollInCourse = (courseId: string) => {
-    console.log(`Enrolling in course with ID: ${courseId}`);
+ 
     // In a real app, this would update the user's enrolled courses in the backend
   };
 

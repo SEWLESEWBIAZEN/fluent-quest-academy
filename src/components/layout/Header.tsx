@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,9 +12,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Brand from './Brand';
+import { getInitials } from '@/lib/getInitials';
+import OrbitProgress from 'react-loading-indicators/OrbitProgress';
 
 const Header: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user,isLoading, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    return <Navigate to="/login" replace />;
+  };
 
   return (
     <header className="border-b bg-white">
@@ -37,7 +42,7 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        <div className="flex items-center">
+        <div className="flex items-center">          
           {user ? (
             <div className="flex items-center">
               <div className="hidden sm:flex mr-4 items-center">
@@ -55,14 +60,14 @@ const Header: React.FC = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="rounded-full h-10 w-10 p-0">
                     <Avatar>
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={user?.avatar} alt={user?.name} />
+                      <AvatarFallback>{getInitials(user?.name ?? "Guest User")}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
-                  <DropdownMenuLabel className="text-xs text-gray-500">{user.role}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs text-gray-500">{user?.role}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <Link to="/dashboard">
                     <DropdownMenuItem>Dashboard</DropdownMenuItem>
@@ -76,10 +81,12 @@ const Header: React.FC = () => {
                     </Link>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+          ) : isLoading ? (
+            <OrbitProgress variant="dotted" color="#082f49" size="small" />
           ) : (
             <div className="flex space-x-2">
               <Link to="/login">

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { User, AuthState, UserRole, UserData } from "../lib/types"
-
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -244,7 +243,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
       return data.success;
     } catch (error) {
-      console.error("2FA verification error:", error);
+      
       return false;
     }
   };

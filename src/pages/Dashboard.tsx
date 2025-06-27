@@ -7,22 +7,24 @@ import CourseCard from '@/components/courses/CourseCard';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
+import CircularProgress from '@/components/layout/CircularProgress';
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
-
+  const { user,isLoading } = useAuth();
   const { courses, getUserProgress } = useCourse();
-  
- // Redirect to login if not authenticated
-  if (!user) {
+  if (isLoading) return <CircularProgress />;
+
+    // Redirect to login if not authenticated
+  if (!user && !isLoading) {
     return <Navigate to="/login" replace />;
   }
     
   if (!user?.registered) {
     return <Navigate to="/register/complete" replace />;
   }
- 
-    
+
+  
+
   // Get enrolled courses
   const enrolledCourses =[]
   //  courses.filter(course => 

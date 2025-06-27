@@ -2,9 +2,10 @@
 import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star } from "lucide-react"; // optional icons
 import { UserData } from "@/lib/types";
 import { getInitials } from "@/lib/getInitials";
+import { Navigate } from "react-router-dom";
 
 const UserProfile = ({user}:{user:UserData}) => {
-    
+    // if(!!(!user)) return <Navigate to="/login" replace />;
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Avatar */}
