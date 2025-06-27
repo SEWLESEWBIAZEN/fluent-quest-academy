@@ -52,7 +52,7 @@ const UserProfilePage = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
-        <div className="lg:max-w-2xl md:max-w-md mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+        <div className="lg:max-w-2xl md:max-w-md mx-auto bg-transparent p-8 rounded-lg ">
           {
             (error || !userData) ?
               <div className="w-full justify-center flex items-center text-2xl font-bold ">OOPS...., User Not found!</div> :

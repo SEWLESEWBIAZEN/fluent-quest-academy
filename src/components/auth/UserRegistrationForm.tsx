@@ -127,7 +127,7 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
           <Label htmlFor="avatar">Profile Picture</Label>
           <Input
             type="file"
-            accept="image/*" // ✅ Correct MIME type
+            accept="image/*" // Correct MIME type
             id="avatar"
             onChange={(e) => {
               const file = e.target.files?.[0];
@@ -139,7 +139,7 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
         </div>
 
       </div>
-      <div className="space-y-2 mt-6 text-xl ">
+      <div className="space-y-2 my-6 text-xl ">
         <Label>I am registering as a:</Label>
         <RadioGroup value={role} onValueChange={(value) => setRole(value as UserRole)} className="flex space-x-4">
           <div className="flex items-center space-x-2">

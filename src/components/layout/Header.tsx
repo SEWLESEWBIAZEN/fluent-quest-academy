@@ -16,7 +16,7 @@ import { getInitials } from '@/lib/getInitials';
 import OrbitProgress from 'react-loading-indicators/OrbitProgress';
 
 const Header: React.FC = () => {
-  const { user,isLoading, logout } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const handleLogout = () => {
     logout();
     return <Navigate to="/login" replace />;
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        <div className="flex items-center">          
+        <div className="flex items-center">
           {user ? (
             <div className="flex items-center">
               <div className="hidden sm:flex mr-4 items-center">

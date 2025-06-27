@@ -23,15 +23,12 @@ const RegisterForm: React.FC = () => {
   const [score, setScore] = useState<number>(0)
 
   const navigate = useNavigate();
-
   const isLoggedIn = useSelector(selectIsAuthenticated);
-
  
   const actionCodeSettings = {
     url:  redirectUrl,
     handleCodeInApp: true
   }
-
 
   if (isLoggedIn) {
     toast({
@@ -49,7 +46,6 @@ const RegisterForm: React.FC = () => {
     }
 
   }, [isLoggedIn, navigate])
-
 
   // Function to handle account creation, firebase user account using email and password
   // This function will be called when the form is submitted
