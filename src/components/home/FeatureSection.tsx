@@ -8,7 +8,7 @@ const features = [
     description: 'Engage with interactive lessons, quizzes, and multimedia content designed to make learning fun.',
   },
   {
-    icon: '👩‍🏫',
+    icon: '🧑‍🏫',
     title: 'Expert Teachers',
     description: 'Learn from qualified language instructors who provide personalized feedback and guidance.',
   },

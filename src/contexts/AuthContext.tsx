@@ -157,7 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       dispatch({ type: "SESSION_EXPIRED" });
       logout();
       toast({
-        title: "Session Expired",
+        title: "🙇🏿 Session Expired",
         description: "Please log in again.",
         variant: "destructive",
       });
@@ -199,6 +199,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     toast({
       title: "Session Extended",
       description: "Your session has been extended.",
+      variant:"primary"
     });
   };
 

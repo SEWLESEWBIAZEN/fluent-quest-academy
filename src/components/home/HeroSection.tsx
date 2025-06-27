@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-10 md:mb-0">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-              Master Languages the <span className="text-brand-600">Fun</span> Way
+              Master Languages the <span className=" bg-gradient-to-r from-purple-300 to-brand-900 bg-clip-text text-transparent">Fun</span> Way
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-md">
               Learn from expert teachers, track your progress, and connect with language learners worldwide in one interactive platform.

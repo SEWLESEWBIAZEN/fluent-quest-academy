@@ -26,13 +26,13 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <nav className="hidden md:flex space-x-6 text-sm font-medium">
-          <Link to="/courses" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/courses" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
             Courses
           </Link>
-          <Link to="/teachers" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/teachers" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
             Teachers
           </Link>
-          <Link to="/pricing" className="text-gray-600 hover:text-brand-600 transition-colors">
+          <Link to="/pricing" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
             Pricing
           </Link>
         </nav>
