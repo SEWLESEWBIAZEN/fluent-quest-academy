@@ -24,7 +24,7 @@ const testimonials = [
 
 const TestimonialSection: React.FC = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">What Our Users Say</h2>
@@ -35,7 +35,7 @@ const TestimonialSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-gray-50 p-6 rounded-lg">
+            <div key={index} className="bg-background p-6 rounded-lg">
               <div className="flex items-center mb-4">
                 <div className="text-yellow-500 text-3xl">★</div>
                 <div className="text-yellow-500 text-3xl">★</div>

@@ -18,12 +18,15 @@ import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 import CompleteRegistration from "./pages/CompleteRegistration";
 import UserProfilePage from "./pages/UserProfilePage";
+import { ThemeProvider } from "./contexts/ThemeContext";
+
 
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <ThemeProvider>
     <TooltipProvider>
       <AuthProvider>
         <CourseProvider>
@@ -47,6 +50,7 @@ const App = () => (
         </CourseProvider>
       </AuthProvider>
     </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

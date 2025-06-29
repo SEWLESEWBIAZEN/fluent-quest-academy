@@ -50,7 +50,7 @@ const plans = [
 
 const PricingSection: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Simple, Transparent Pricing</h2>
@@ -63,12 +63,12 @@ const PricingSection: React.FC = () => {
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className={`bg-white rounded-lg shadow-md border overflow-hidden transition-all transform hover:-translate-y-1 hover:shadow-lg ${
-                plan.popular ? 'border-brand-500 ring-2 ring-brand-500 ring-opacity-50' : 'border-gray-200'
+              className={`bg-background rounded-lg shadow-md border overflow-hidden transition-all transform hover:-translate-y-1 hover:shadow-lg ${
+                plan.popular ? 'border-brand-700 ring-2 ring-brand-500 ring-opacity-50' : 'border-gray-800'
               }`}
             >
               {plan.popular && (
-                <div className="bg-brand-500 text-white text-center py-1 text-sm font-medium">
+                <div className="bg-background text-white text-center py-1 text-sm font-medium">
                   Most Popular
                 </div>
               )}
@@ -93,7 +93,7 @@ const PricingSection: React.FC = () => {
                 
                 <Link to="/register">
                   <Button 
-                    className={`w-full ${plan.popular ? 'bg-brand-600 hover:bg-brand-700' : ''}`}
+                    className={`w-full ${plan.popular ? 'bg-background hover:bg-brand-700' : ''}`}
                     variant={plan.popular ? 'default' : 'outline'}
                   >
                     {plan.cta}

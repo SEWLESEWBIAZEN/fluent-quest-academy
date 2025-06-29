@@ -36,7 +36,7 @@ const features = [
 
 const FeatureSection: React.FC = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Why Choose FluentQuest?</h2>
@@ -47,8 +47,8 @@ const FeatureSection: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-2xl mb-4">
+            <div key={index} className="bg-background p-6 rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 dark:bg-brand-950 rounded-full flex items-center justify-center text-2xl mb-4">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>

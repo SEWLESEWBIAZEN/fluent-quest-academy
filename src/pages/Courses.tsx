@@ -65,7 +65,7 @@ const Courses: React.FC = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
+            <div className="sticky top-24 bg-background p-6 rounded-lg border dark:border-gray-800 border-gray-100 shadow-sm">
               <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
               
               <LanguageFilter

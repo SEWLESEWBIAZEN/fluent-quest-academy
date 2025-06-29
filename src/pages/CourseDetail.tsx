@@ -81,7 +81,7 @@ const CourseDetail: React.FC = () => {
           </div>
           
           <div className="md:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-background rounded-lg shadow-sm border border-gray-200 overflow-hidden">
               <img
                 src={course.imageUrl}
                 alt={course.title}
@@ -125,7 +125,7 @@ const CourseDetail: React.FC = () => {
                   <Card key={lesson.id}>
                     <CardContent className="p-4 flex items-center justify-between">
                       <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                        <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center mr-4">
                           <span>{lesson.order}</span>
                         </div>
                         <div>
@@ -151,12 +151,12 @@ const CourseDetail: React.FC = () => {
             </div>
           </TabsContent>
           <TabsContent value="resources" className="pt-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
               <p className="text-gray-600">Additional resources will be available after enrollment.</p>
             </div>
           </TabsContent>
           <TabsContent value="reviews" className="pt-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+            <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
               <p className="text-gray-600">Reviews will appear here once students have completed the course.</p>
             </div>
           </TabsContent>

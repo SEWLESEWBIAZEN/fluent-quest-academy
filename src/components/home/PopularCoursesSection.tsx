@@ -12,7 +12,7 @@ const PopularCoursesSection: React.FC = () => {
   const popularCourses = courses.slice(0, 3);
   
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div>

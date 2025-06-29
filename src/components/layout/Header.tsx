@@ -23,7 +23,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="border-b bg-white">
+    <header className="border-b bg-background">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="text-2xl font-bold text-brand-600 flex items-end">
@@ -47,11 +47,11 @@ const Header: React.FC = () => {
             <div className="flex items-center">
               <div className="hidden sm:flex mr-4 items-center">
                 <div className="flex items-center mr-4">
-                  <span className="mr-1 text-yellow-500">🔥</span>
+                  <span className="mr-1">🔥</span>
                   <span className="text-sm font-medium">{user.days} days</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="mr-1 text-brand-500">⭐</span>
+                  <span className="mr-1">⭐</span>
                   <span className="text-sm font-medium">{user.points} XP</span>
                 </div>
               </div>

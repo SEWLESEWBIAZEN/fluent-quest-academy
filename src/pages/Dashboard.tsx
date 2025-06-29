@@ -40,14 +40,14 @@ const Dashboard: React.FC = () => {
             <p className="text-gray-600">Track your progress and continue learning</p>
           </div>
           <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
-            <div className="flex items-center bg-yellow-50 px-4 py-2 rounded-lg">
+            <div className="flex items-center bg-background px-4 py-2 rounded-lg">
               <span className="text-yellow-500 text-lg mr-2">🔥</span>
               <div>
                 <p className="text-sm text-gray-600">Current streak</p>
                 <p className="font-bold text-gray-800">{user?.days} days</p>
               </div>
             </div>
-            <div className="flex items-center bg-blue-50 px-4 py-2 rounded-lg">
+            <div className="flex items-center bg-background text-foreground px-4 py-2 rounded-lg">
               <span className="text-blue-500 text-lg mr-2">⭐</span>
               <div>
                 <p className="text-sm text-gray-600">Experience points</p>
@@ -57,10 +57,10 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-12">
+        <div className="bg-background p-6 rounded-lg shadow-sm border dark:border-gray-800 mb-12">
           <h2 className="text-xl font-bold mb-6">Your Learning Progress</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-background p-4 rounded-lg">
               <p className="text-gray-600 mb-1">Daily Goal</p>
               <div className="flex justify-between text-sm mb-2">
                 <span className="font-medium">15 min / day</span>
@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
               </div>
               <Progress value={67} className="h-2" />
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-background p-4 rounded-lg">
               <p className="text-gray-600 mb-1">Weekly Goal</p>
               <div className="flex justify-between text-sm mb-2">
                 <span className="font-medium">5 days / week</span>
@@ -76,7 +76,7 @@ const Dashboard: React.FC = () => {
               </div>
               <Progress value={60} className="h-2" />
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
+            <div className="bg-background p-4 rounded-lg">
               <p className="text-gray-600 mb-1">Total Lessons Completed</p>
               <div className="flex justify-between text-sm mb-2">
                 <span className="font-medium">All time</span>
@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center bg-gray-50 py-12 rounded-lg border border-dashed border-gray-300">
+            <div className="text-center bg-background py-12 rounded-lg border border-dashed dark:border-gray-800">
               <p className="text-gray-600 mb-4">You haven't enrolled in any courses yet</p>
               <Link to="/courses">
                 <Button>Browse Courses</Button>

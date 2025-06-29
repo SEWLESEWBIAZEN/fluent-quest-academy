@@ -12,45 +12,50 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);   
+    setIsLoading(true);
 
     try {
-      await login(email, password,true);          
+      await login(email, password, true);
       toast({
         title: '🎉 Welcome back!',
         description: 'You have successfully logged in.',
-        variant:'primary'
-      });      
-      return <Navigate to="/dashboard" replace/>;
-    } catch (error) { 
-      if(error?.code==='auth/invalid-credential') 
-        {
-          toast({
-        title: 'Login failed',
-        description: 'Invalid Credentials, Please check your credentials and try again.',
-        variant: 'destructive',
+        variant: 'primary'
       });
-      } 
-      else if(error.code === 'auth/too-many-requests'){
-         toast({
-        title: 'Login failed',
-        description: 'Too many requests, Please try later.',
-        variant: 'destructive',
-      });
-
+      return <Navigate to="/dashboard" replace />;
+    } catch (error) {
+      if (error?.code === 'auth/invalid-credential') {
+        toast({
+          title: 'Login failed',
+          description: 'Invalid Credentials, Please check your credentials and try again.',
+          variant: 'destructive',
+        });
+      }
+      else if (error.code === 'auth/too-many-requests') {
+        toast({
+          title: 'Login failed',
+          description: 'Too many requests, Please try later.',
+          variant: 'destructive',
+        });
+      }
+      else if (error?.code === 'auth/network-request-failed') {
+        toast({
+          title: 'Login failed',
+          description: 'Network error, Please check your internet connection and try again.',
+          variant: 'destructive',
+        });
       }
 
-      else{
-      toast({
-        title: 'Login failed',
-        description: (error instanceof Error) ? error.message : 'Please check your credentials and try again.',
-        variant: 'destructive',
-      });
-    }
-    return;
+      else {
+        toast({
+          title: 'Login failed',
+          description: (error instanceof Error) ? error.message : 'Please check your credentials and try again.',
+          variant: 'destructive',
+        });
+      }
+      return;
     } finally {
       setIsLoading(false);
     }
@@ -77,6 +82,7 @@ const LoginForm: React.FC = () => {
           </Link>
         </div>
         <Input
+        
           id="password"
           type="password"
           value={password}
@@ -88,20 +94,20 @@ const LoginForm: React.FC = () => {
       <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? 'Logging in...' : 'Log In'}
       </Button>
-      
+
       <div className="text-center text-sm">
         <span className="text-gray-600">Don't have an account?</span>{' '}
         <Link to="/register" className="text-brand-600 hover:underline">
           Sign up
         </Link>
       </div>
-      
+
       {/* Demo credentials */}
-      <div className="border-t border-gray-200 pt-4">
+      <div className="border-t border-gray-200 dark:border-gray-800 pt-4">
         <p className="text-sm text-gray-500 mb-2">Demo credentials:</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="sm"
             onClick={() => {
               setEmail('admin.demo@fq.com');
@@ -110,7 +116,7 @@ const LoginForm: React.FC = () => {
           >
             Admin Demo
           </Button>
-          <Button 
+          <Button
             variant="outline"
             size="sm"
             onClick={() => {
@@ -120,8 +126,8 @@ const LoginForm: React.FC = () => {
           >
             Student Demo
           </Button>
-         
-          <Button 
+
+          <Button
             variant="outline"
             size="sm"
             onClick={() => {

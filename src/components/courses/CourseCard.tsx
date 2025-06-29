@@ -52,7 +52,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
             <span>{Math.floor(course.duration / 60)} hrs</span>
           </div>
         </CardContent>
-        <CardFooter className="px-4 py-3 bg-gray-50 border-t flex justify-between items-center">
+        <CardFooter className="px-4 py-3 bg-background border-t flex justify-between items-center">
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>
             <span className="text-sm font-medium">{course.rating}</span>
