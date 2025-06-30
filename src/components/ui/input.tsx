@@ -6,14 +6,21 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (
       <input
+        ref={ref}
         type={type}
         className={cn(
-          "rounded-sm flex h-10 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-transparent px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className // custom class passed as a prop
+          "flex h-10 w-full rounded-md border border-input",
+          "bg-white dark:bg-[#0e0e10]",           // default background
+          "focus:bg-transparent active:bg-transparent dark:focus:bg-transparent dark:active:bg-transparent", // transparent on focus
+          "px-3 py-2 text-sm ring-offset-background",
+          "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          className
         )}
-        ref={ref}       // forwarded ref (from React.forwardRef)
-        {...props}      // all other props (like placeholder, onChange, etc.)
+        {...props}
       />
+
+
 
     )
   }

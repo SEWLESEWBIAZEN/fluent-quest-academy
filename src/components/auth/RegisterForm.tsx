@@ -153,7 +153,7 @@ const RegisterForm: React.FC = () => {
       </Button>
 
       <div className="text-center text-sm">
-        <span className="text-gray-600">Already have an account?</span>{' '}
+        <span className="text-gray-600 dark:text-gray-400">Already have an account?</span>{' '}
         <Link to="/login" className="text-brand-600 hover:underline">
           Log in
         </Link>

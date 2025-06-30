@@ -96,7 +96,7 @@ const LoginForm: React.FC = () => {
       </Button>
 
       <div className="text-center text-sm">
-        <span className="text-gray-600">Don't have an account?</span>{' '}
+        <span className="text-gray-600 dark:text-gray-400">Don't have an account?</span>{' '}
         <Link to="/register" className="text-brand-600 hover:underline">
           Sign up
         </Link>
@@ -104,7 +104,7 @@ const LoginForm: React.FC = () => {
 
       {/* Demo credentials */}
       <div className="border-t border-gray-200 dark:border-gray-800 pt-4">
-        <p className="text-sm text-gray-500 mb-2">Demo credentials:</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Demo credentials:</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <Button
             variant="outline"

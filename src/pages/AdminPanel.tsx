@@ -18,8 +18,8 @@ const AdminPanel: React.FC = () => {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Panel</h1>
-        
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-8">Admin Panel</h1>
+
         <Tabs defaultValue="courses" className="w-full">
           <TabsList className="mb-8">
             <TabsTrigger value="courses">My Courses</TabsTrigger>
@@ -40,7 +40,7 @@ const AdminPanel: React.FC = () => {
                   <CardTitle className="text-lg">Spanish for Beginners</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-gray-500 mb-4">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <div className="flex justify-between mb-1">
                       <span>Students</span>
                       <span>1,250</span>
@@ -62,7 +62,7 @@ const AdminPanel: React.FC = () => {
                   <CardTitle className="text-lg">Intermediate French</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-gray-500 mb-4">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <div className="flex justify-between mb-1">
                       <span>Students</span>
                       <span>950</span>
@@ -81,11 +81,11 @@ const AdminPanel: React.FC = () => {
               
               <Card className="border-dashed border-2 flex items-center justify-center">
                 <CardContent className="text-center p-6">
-                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-xl">+</span>
+                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-xl ">+</span>
                   </div>
                   <h3 className="font-medium mb-2">Add New Course</h3>
-                  <p className="text-sm text-gray-500 mb-4">Create a new language course</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Create a new language course</p>
                   <Button>Create Course</Button>
                 </CardContent>
               </Card>
@@ -98,11 +98,11 @@ const AdminPanel: React.FC = () => {
                 <CardTitle>Student Management</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   View and manage your students. Track their progress and engagement.
                 </p>
                 <div className="mt-6">
-                  <p className="text-gray-500">Student data will appear here.</p>
+                  <p className="text-gray-500 dark:text-gray-400">Student data will appear here.</p>
                 </div>
               </CardContent>
             </Card>
@@ -114,28 +114,28 @@ const AdminPanel: React.FC = () => {
                 <CardTitle>Upcoming Appointments</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   Manage your scheduled appointments with students.
                 </p>
                 <div className="mt-6">
-                  <p className="text-gray-500">Your calendar will appear here.</p>
+                  <p className="text-gray-500 dark:text-gray-400">Your calendar will appear here.</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
           
-          {user.role === 'admin' && (
+          {user?.role === 'admin' && (
             <TabsContent value="settings">
               <Card>
                 <CardHeader>
                   <CardTitle>Application Settings</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Manage global application settings, languages, and feature toggles.
                   </p>
                   <div className="mt-6">
-                    <p className="text-gray-500">Settings controls will appear here.</p>
+                    <p className="text-gray-500 dark:text-gray-400">Settings controls will appear here.</p>
                   </div>
                 </CardContent>
               </Card>
