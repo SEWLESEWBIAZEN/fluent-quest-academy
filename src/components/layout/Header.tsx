@@ -31,13 +31,13 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <nav className="hidden md:flex space-x-6 text-sm font-medium">
-          <Link to="/courses" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
+          <Link to="/courses" className="text-gray-600 dark:text-gray-400 dark:hover:text-brand-800 hover:text-brand-600 transition-colors cursor-pointer">
             Courses
           </Link>
-          <Link to="/teachers" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
+          <Link to="/teachers" className="text-gray-600 dark:text-gray-400 dark:hover:text-brand-800 hover:text-brand-600 transition-colors cursor-pointer">
             Teachers
           </Link>
-          <Link to="/pricing" className="text-gray-600 hover:text-brand-600 transition-colors cursor-pointer">
+          <Link to="/pricing" className="text-gray-600 dark:text-gray-400 dark:hover:text-brand-800 hover:text-brand-600 transition-colors cursor-pointer">
             Pricing
           </Link>
         </nav>

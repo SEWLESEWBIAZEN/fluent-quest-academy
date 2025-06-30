@@ -21,7 +21,7 @@ const LevelFilter: React.FC<LevelFilterProps> = ({ selectedLevel, onChange }) =>
   
   return (
     <div className="mb-6">
-      <h3 className="font-medium text-sm mb-3 text-gray-700">Level</h3>
+      <h3 className="font-medium text-sm mb-3 text-gray-700 dark:text-gray-400">Level</h3>
       <ToggleGroup 
         type="single" 
         value={selectedLevel || ''} 

@@ -47,8 +47,8 @@ const Courses: React.FC = () => {
     <Layout>
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">Explore Our Courses</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">Explore Our Courses</h1>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Discover a wide range of language courses taught by expert instructors.
           </p>
         </div>
@@ -66,8 +66,8 @@ const Courses: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
             <div className="sticky top-24 bg-background p-6 rounded-lg border dark:border-gray-800 border-gray-100 shadow-sm">
-              <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
-              
+              <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-300">Filters</h2>
+
               <LanguageFilter
                 languages={languages}
                 selectedLanguage={selectedLanguage}

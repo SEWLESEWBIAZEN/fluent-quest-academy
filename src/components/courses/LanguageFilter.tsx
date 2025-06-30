@@ -16,7 +16,7 @@ const LanguageFilter: React.FC<LanguageFilterProps> = ({
 }) => {
   return (
     <div className="mb-6">
-      <h3 className="font-medium text-sm mb-3 text-gray-700">Languages</h3>
+      <h3 className="font-medium text-sm mb-3 text-gray-700 dark:text-gray-400">Languages</h3>
       <ToggleGroup type="single" value={selectedLanguage || ''} onValueChange={onChange} className="flex flex-wrap gap-2">
         <ToggleGroupItem value="" className="rounded-full px-4 py-2 text-sm">
           All

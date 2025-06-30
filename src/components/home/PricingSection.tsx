@@ -53,8 +53,8 @@ const PricingSection: React.FC = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">Simple, Transparent Pricing</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Choose the plan that fits your learning needs. No hidden fees, cancel anytime.
           </p>
         </div>
@@ -74,19 +74,19 @@ const PricingSection: React.FC = () => {
               )}
               
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">{plan.name}</h3>
-                <p className="text-gray-600 mb-4">{plan.description}</p>
-                
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-300 mb-2">{plan.name}</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">{plan.description}</p>
+
                 <div className="mb-6">
-                  <span className="text-4xl font-bold text-gray-800">${plan.price}</span>
-                  <span className="text-gray-600">/month</span>
+                  <span className="text-4xl font-bold text-gray-800 dark:text-gray-300">${plan.price}</span>
+                  <span className="text-gray-600 dark:text-gray-400">/month</span>
                 </div>
                 
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
                       <Check className="h-5 w-5 text-brand-500 mr-2 flex-shrink-0" />
-                      <span className="text-gray-600">{feature}</span>
+                      <span className="text-gray-600 dark:text-gray-400">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -104,7 +104,7 @@ const PricingSection: React.FC = () => {
           ))}
         </div>
         
-        <div className="text-center mt-10 text-gray-600">
+        <div className="text-center mt-10 text-gray-600 dark:text-gray-400">
           All plans include a 7-day free trial. No credit card required.
         </div>
       </div>

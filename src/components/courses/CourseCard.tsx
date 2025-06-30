@@ -43,11 +43,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
         <CardContent className="p-4">
           <div className="flex items-center mb-2">
             <span className="text-lg font-bold mr-2">{course.language.flag}</span>
-            <span className="text-sm text-gray-600">{course.language.name}</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">{course.language.name}</span>
           </div>
           <h3 className="font-semibold text-lg mb-1">{course.title}</h3>
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{course.description}</p>
-          <div className="flex items-center justify-between text-sm text-gray-500">
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">{course.description}</p>
+          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
             <span>{course.totalLessons} lessons</span>
             <span>{Math.floor(course.duration / 60)} hrs</span>
           </div>
@@ -56,7 +56,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>
             <span className="text-sm font-medium">{course.rating}</span>
-            <span className="text-xs text-gray-500 ml-1">({course.studentCount})</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">({course.studentCount})</span>
           </div>
           <div>
             {course.price === 0 ? (

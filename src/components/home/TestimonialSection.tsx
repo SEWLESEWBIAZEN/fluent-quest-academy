@@ -27,8 +27,8 @@ const TestimonialSection: React.FC = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">What Our Users Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">What Our Users Say</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Hear from students and teachers who are already transforming their language skills with FluentQuest.
           </p>
         </div>
@@ -43,7 +43,7 @@ const TestimonialSection: React.FC = () => {
                 <div className="text-yellow-500 text-3xl">★</div>
                 <div className="text-yellow-500 text-3xl">★</div>
               </div>
-              <blockquote className="text-gray-700 mb-6">"{testimonial.content}"</blockquote>
+              <blockquote className="text-gray-700 dark:text-gray-400 mb-6">"{testimonial.content}"</blockquote>
               <div className="flex items-center">
                 <img
                   src={testimonial.avatar}
@@ -51,8 +51,8 @@ const TestimonialSection: React.FC = () => {
                   className="w-10 h-10 rounded-full mr-3"
                 />
                 <div>
-                  <div className="font-semibold text-gray-800">{testimonial.author}</div>
-                  <div className="text-sm text-gray-600">{testimonial.role}</div>
+                  <div className="font-semibold text-gray-800 dark:text-gray-300">{testimonial.author}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</div>
                 </div>
               </div>
             </div>

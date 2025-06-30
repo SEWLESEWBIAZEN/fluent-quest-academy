@@ -33,14 +33,14 @@ const UserProfile = ({user}:{user:UserData}) => {
         <h2 className="text-xl font-semibold text-gradient-custom capitalize">
           {user?.name}
         </h2>
-        <p className="text-sm text-gray-500">@{user?.username}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">@{user?.username}</p>
         <span className="inline-block mt-2 px-3 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 capitalize">
           {user?.role}
         </span>
       </div>
 
       {/* User Details */}
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-400">
         <div className="flex items-center gap-2">
           <Mail className="w-4 h-4 text-gray-500" />
           <span>{user?.email}</span>

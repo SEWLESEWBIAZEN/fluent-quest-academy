@@ -10,10 +10,10 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4 text-brand-600 flex items-end">
+            <h3 className="font-bold text-lg mb-4 flex items-end">
               <Brand />
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               Master languages through interactive learning, skilled teachers, and gamified practice.
             </p>
           </div>
@@ -22,17 +22,17 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold mb-4">Learn</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/courses" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/courses" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Courses
                 </Link>
               </li>
               <li>
-                <Link to="/teachers" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/teachers" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Teachers
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/pricing" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Pricing
                 </Link>
               </li>
@@ -43,17 +43,17 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold mb-4">About</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/about" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/blog" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Contact
                 </Link>
               </li>
@@ -64,12 +64,12 @@ const Footer: React.FC = () => {
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/terms" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="text-gray-600 hover:text-brand-600 transition-colors">
+                <Link to="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-800 transition-colors">
                   Privacy Policy
                 </Link>
               </li>

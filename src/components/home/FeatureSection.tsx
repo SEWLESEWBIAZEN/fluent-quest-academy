@@ -39,8 +39,8 @@ const FeatureSection: React.FC = () => {
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Why Choose FluentQuest?</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">Why Choose FluentQuest?</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Our comprehensive platform offers everything you need to master a new language efficiently and enjoyably.
           </p>
         </div>
@@ -51,8 +51,8 @@ const FeatureSection: React.FC = () => {
               <div className="w-12 h-12 dark:bg-brand-950 rounded-full flex items-center justify-center text-2xl mb-4">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-300 mb-3">{feature.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
             </div>
           ))}
         </div>

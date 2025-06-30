@@ -16,8 +16,8 @@ const PopularCoursesSection: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Popular Courses</h2>
-            <p className="text-gray-600">Explore our most popular language courses</p>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-2">Popular Courses</h2>
+            <p className="text-gray-600 dark:text-gray-400">Explore our most popular language courses</p>
           </div>
           <Link to="/courses">
             <Button variant="outline">View All Courses</Button>
