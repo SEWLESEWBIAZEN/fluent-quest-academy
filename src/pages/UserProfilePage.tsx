@@ -57,9 +57,16 @@ const UserProfilePage = () => {
             (error || !userData) ?
               <div className="w-full justify-center flex items-center text-2xl font-bold ">OOPS...., User Not found!</div> :
               <>
+              <div className="flex flex-col md:flex-row w-full justify-between items-start">
                 <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">
                   {userData?.name ?? "Guest User"}'s Profile
                 </h1>
+                <div className="text-center mb-4 flex justify-end">
+                  <button className="bg-brand-900 text-white px-4 py-2 rounded-md">
+                    Edit
+                  </button>
+                </div>
+                </div>            
                 <UserProfile user={userData} />
               </>
           }

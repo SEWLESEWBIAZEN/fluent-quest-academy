@@ -120,7 +120,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         accessToken: token,
         registered:role === UserRole.Guest?false:true,
         points:userData?.points || 0,
-        days:userData?.streakDays || 0
+        days:userData?.streakDays || 0,
+        verified:userData?.verified || false
       };
     }
   };

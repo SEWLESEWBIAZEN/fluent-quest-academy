@@ -1,31 +1,32 @@
 
-import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star } from "lucide-react"; // optional icons
+import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star, PencilIcon } from "lucide-react"; // optional icons
 import { UserData } from "@/lib/types";
 import { getInitials } from "@/lib/getInitials";
-import { Navigate } from "react-router-dom";
-
 const UserProfile = ({user}:{user:UserData}) => {
-    // if(!!(!user)) return <Navigate to="/login" replace />;
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Avatar */}
-      <div className="relative">
+      <div className="relative group ">
         {user?.avatar ? (
           <img
             src={user?.avatar}
             alt="User Avatar"
-            className="h-24 w-24 rounded-full object-cover border-2 border-brand-900 shadow"
+            className="h-16 w-16 md:h-24 md:w-24 rounded-full object-cover border-2 border-brand-900 shadow group-hover:blur-md"
           />
         ) : (
-          <div className="h-24 w-24 rounded-full bg-gradient-to-br from-purple-300 to-brand-900 text-white flex items-center justify-center text-3xl font-bold shadow">
+          <div className="h-16 w-16 md:h-24 md:w-24 rounded-full bg-gradient-to-br from-purple-300 to-brand-900 text-white flex items-center justify-center text-xl md:text-3xl font-bold shadow group-hover:blur-md">
             {getInitials(user?.name ?? "Guest User")}
           </div>
         )}
         {user?.verified && (
           <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow">
-            <BadgeCheck className="w-5 h-5 text-green-500" />
+            <BadgeCheck className="w-5 h-5 text-brand-800" />
           </div>
         )}
+        <div className="absolute top-[30%] right-[30%] ">
+          <PencilIcon className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer" />
+        </div>
+       
       </div>
 
       {/* Name & Role */}

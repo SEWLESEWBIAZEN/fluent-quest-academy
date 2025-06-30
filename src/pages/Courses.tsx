@@ -90,7 +90,7 @@ const Courses: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-2xl font-medium text-gray-600">No courses found</p>
+                <p className="text-2xl font-medium text-gray-600 dark:text-gray-400">No courses found</p>
                 <p className="text-gray-500 mt-2">Try adjusting your filters</p>
               </div>
             )}

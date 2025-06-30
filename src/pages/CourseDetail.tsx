@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
+import { Lock } from 'lucide-react';
 
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,14 +40,14 @@ const CourseDetail: React.FC = () => {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <span className="text-2xl mr-2">{course.language.flag}</span>
-              <span className="text-lg text-gray-600">{course.language.name}</span>
+              <span className="text-lg text-gray-600 dark:text-gray-400">{course.language.name}</span>
               <div className={`ml-3 language-level-badge language-level-${course.level}`}>
                 {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
               </div>
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">{course.title}</h1>
-            <p className="text-gray-600 mb-6">{course.description}</p>
-            
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">{course.title}</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{course.description}</p>
+
             <div className="flex flex-wrap gap-6 mb-6">
               <div className="flex items-center">
                 <span className="text-yellow-500 mr-1">★</span>
@@ -139,7 +140,7 @@ const CourseDetail: React.FC = () => {
                         {isEnrolled ? (
                           <Button variant="outline" size="sm">Start</Button>
                         ) : (
-                          <Button variant="outline" size="sm" disabled>Locked</Button>
+                          <Button variant="outline" size="sm" disabled><Lock/></Button>
                         )}
                       </div>
                     </CardContent>
@@ -152,12 +153,12 @@ const CourseDetail: React.FC = () => {
           </TabsContent>
           <TabsContent value="resources" className="pt-6">
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
-              <p className="text-gray-600">Additional resources will be available after enrollment.</p>
+              <p className="text-gray-600 dark:text-gray-400">Additional resources will be available after enrollment.</p>
             </div>
           </TabsContent>
           <TabsContent value="reviews" className="pt-6">
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
-              <p className="text-gray-600">Reviews will appear here once students have completed the course.</p>
+              <p className="text-gray-600 dark:text-gray-400">Reviews will appear here once students have completed the course.</p>
             </div>
           </TabsContent>
         </Tabs>
