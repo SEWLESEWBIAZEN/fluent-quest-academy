@@ -1,13 +1,15 @@
 
-import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star, PencilIcon } from "lucide-react"; // optional icons
+import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star } from "lucide-react"; // optional icons
 import { UserData } from "@/lib/types";
 import { getInitials } from "@/lib/getInitials";
-const UserProfile = ({user}:{user:UserData}) => {
+import UpdateAvatar from "./UpdateAvatar";
+const UserProfile = ({ user }: { user: UserData }) => {
+
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Avatar */}
       <div className="relative group ">
-        {user?.avatar ? (
+        {user?.avatar ? (     
           <img
             src={user?.avatar}
             alt="User Avatar"
@@ -24,9 +26,9 @@ const UserProfile = ({user}:{user:UserData}) => {
           </div>
         )}
         <div className="absolute top-[30%] right-[30%] ">
-          <PencilIcon className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer" />
+          <UpdateAvatar />
         </div>
-       
+
       </div>
 
       {/* Name & Role */}

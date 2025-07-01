@@ -17,6 +17,7 @@ export interface User {
   points?:number;
   enrolledCourses?:any[],
   verified?:boolean;
+  
 }
 
 export interface AuthState {

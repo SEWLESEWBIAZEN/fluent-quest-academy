@@ -4,9 +4,9 @@ import axios from "axios";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiUrl } from "@/lib/envService";
 import Layout from "@/components/layout/Layout";
-import UserProfile from "@/components/auth/UserProfile";
+import UserProfile from "@/components/users/UserProfile";
 import CircularProgress from "@/components/layout/CircularProgress";
-import UserUpdateForm from "@/components/auth/UserUpdateForm";
+import UserUpdateForm from "@/components/users/UserUpdateForm";
 
 const UserProfilePage = () => {
   const { user, isLoading: authLoading } = useAuth();
@@ -59,10 +59,10 @@ const UserProfilePage = () => {
               <div className="w-full justify-center flex items-center text-2xl font-bold ">OOPS...., User Not found!</div> :
               <>
               <div className="flex flex-col md:flex-row w-full justify-between items-start">
-                <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">
+                {/* <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">
                   {userData?.name ?? "Guest User"}'s Profile
-                </h1>
-                <div className="text-center mb-4 flex justify-end">
+                </h1> */}
+                <div className="text-center mb-4 flex w-full justify-end">
                   <UserUpdateForm userData={userData ?? {}} />
                 </div>
                 </div>            

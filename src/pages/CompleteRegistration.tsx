@@ -1,4 +1,4 @@
-import UserRegistrationForm from '@/components/auth/UserRegistrationForm'
+import UserRegistrationForm from '@/components/users/UserRegistrationForm'
 import Layout from '@/components/layout/Layout'
 import { useAuth } from '@/contexts/AuthContext'
 

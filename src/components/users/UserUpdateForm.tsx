@@ -77,7 +77,7 @@ const UserUpdateForm = ({ userData }: { userData: UserData }) => {
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <button className="bg-brand-900 text-white px-4 py-2 rounded-md" onClick={() => setIsDialogOpen(true)}>
                     Edit
                 </button>
