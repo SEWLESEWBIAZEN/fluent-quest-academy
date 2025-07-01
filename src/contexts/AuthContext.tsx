@@ -91,6 +91,7 @@ async function getRoleByEmail(email, token) {
   userInfo = response?.data?.data || {}
   return userInfo
 }
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { toast } = useToast();
@@ -114,6 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: firebaseUser.uid,
         userId:userData?._id || "",
         email: firebaseUser.email!,
+        username: userData?.username || firebaseUser.email?.split("@")[0] || "guest",
         name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "User",
         role: role, // you may want to load this from Firestore or claims
         twoFactorEnabled: false, // adjust based on your logic
@@ -121,7 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         registered:role === UserRole.Guest?false:true,
         points:userData?.points || 0,
         days:userData?.streakDays || 0,
-        verified:userData?.verified || false
+        verified:userData?.verified || false        
       };
     }
   };
@@ -145,7 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           action: (
             <button
               onClick={refreshSession}
-              className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+              className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground text-nowrap"
             >
               Extend Session
             </button>

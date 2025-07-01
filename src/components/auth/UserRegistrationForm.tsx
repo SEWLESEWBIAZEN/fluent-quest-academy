@@ -44,7 +44,7 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
         },
         {
           headers: {
-            authToken: user?.accessToken, // ✅ preferred naming
+            authToken: user?.accessToken, // preferred naming
           },
         }
       );

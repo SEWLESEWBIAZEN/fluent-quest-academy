@@ -6,6 +6,7 @@ import { apiUrl } from "@/lib/envService";
 import Layout from "@/components/layout/Layout";
 import UserProfile from "@/components/auth/UserProfile";
 import CircularProgress from "@/components/layout/CircularProgress";
+import UserUpdateForm from "@/components/auth/UserUpdateForm";
 
 const UserProfilePage = () => {
   const { user, isLoading: authLoading } = useAuth();
@@ -62,9 +63,7 @@ const UserProfilePage = () => {
                   {userData?.name ?? "Guest User"}'s Profile
                 </h1>
                 <div className="text-center mb-4 flex justify-end">
-                  <button className="bg-brand-900 text-white px-4 py-2 rounded-md">
-                    Edit
-                  </button>
+                  <UserUpdateForm userData={userData ?? {}} />
                 </div>
                 </div>            
                 <UserProfile user={userData} />

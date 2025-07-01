@@ -147,7 +147,7 @@ const CourseDetail: React.FC = () => {
                   </Card>
                 ))
               ) : (
-                <p className="text-gray-600">No lessons available for this course yet.</p>
+                <p className="text-gray-600 dark:text-gray-400">No lessons available for this course yet.</p>
               )}
             </div>
           </TabsContent>
