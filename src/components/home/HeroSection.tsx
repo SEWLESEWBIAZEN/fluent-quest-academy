@@ -53,7 +53,7 @@ const HeroSection: React.FC = () => {
               </div>
               <div className="bg-background rounded-xl shadow-xl overflow-hidden border border-gray-100">
                 <img 
-                  src="/placeholder.svg" 
+                  src="../../src/assets/images/hero.png" 
                   alt="Language Learning" 
                   className="w-full h-auto max-w-md"
                 />

@@ -7,6 +7,7 @@ import Layout from "@/components/layout/Layout";
 import UserProfile from "@/components/users/UserProfile";
 import CircularProgress from "@/components/layout/CircularProgress";
 import UserUpdateForm from "@/components/users/UserUpdateForm";
+import { RefreshCcw } from "lucide-react";
 // import axiosClient from '@/lib/axiosService'
 
 const UserProfilePage = () => {
@@ -55,12 +56,14 @@ const UserProfilePage = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="lg:max-w-2xl md:max-w-md mx-auto bg-transparent p-8 rounded-lg ">
           {
-            (error || !userData) ?
+            ((error || !userData)) ?
               <div>
-                <div className="w-full justify-center flex items-center text-2xl font-bold ">
-                  OOPS...., User has Not complete information!
+                <div className="w-full justify-center flex flex-col items-center text-2xl font-bold">
+                  <span className="text-2xl">OOOOPS...., </span>
+                  <span className="text-red-400 text-sm font-thin">User has Not complete information!</span>
+                  <span className="text-white/50 mt-10 text-sm font-thin flex flex-row gap-3 items-center"><RefreshCcw size={14}/> Please refresh once.</span>
                 </div>
-              </div>:
+              </div> :
               <>
                 <div className="flex flex-col md:flex-row w-full justify-between items-start">
                   {/* <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">

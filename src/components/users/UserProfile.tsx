@@ -3,7 +3,6 @@ import { UserData } from "@/lib/types";
 import { getInitials } from "@/lib/getInitials";
 import UpdateAvatar from "./UpdateAvatar";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "../ui/button";
 import DeleteUser from "./DeleteUser";
 
 const UserProfile = ({ user }: { user: UserData }) => {

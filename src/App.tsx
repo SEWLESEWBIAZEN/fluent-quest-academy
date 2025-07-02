@@ -10,14 +10,14 @@ import { CourseProvider } from "@/contexts/CourseContext";
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Courses from "./pages/Courses";
-import CourseDetail from "./pages/CourseDetail";
+import Register from "./pages/user/Register";
+import Courses from "./pages/course/Courses";
+import CourseDetail from "./pages/course/CourseDetail";
 import Dashboard from "./pages/Dashboard";
-import AdminPanel from "./pages/AdminPanel";
+import AdminPanel from "./pages/admin/AdminPanel";
 import NotFound from "./pages/NotFound";
-import CompleteRegistration from "./pages/CompleteRegistration";
-import UserProfilePage from "./pages/UserProfilePage";
+import CompleteRegistration from "./pages/user/CompleteRegistration";
+import UserProfilePage from "./pages/user/UserProfilePage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 
