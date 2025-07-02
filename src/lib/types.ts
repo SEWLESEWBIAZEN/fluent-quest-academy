@@ -2,7 +2,7 @@
 
 // Authentication Types
 export interface User {
-  id: string;
+  id: string;  
   userId:string;
   username:string;
   email: string;
@@ -37,7 +37,7 @@ export enum UserRole {
   Guest = 'guest'
 }
 
-export type UserData ={
+export type UserData ={       
         _id: string,
         username: string,
         name: string,

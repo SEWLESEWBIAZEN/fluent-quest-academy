@@ -33,7 +33,12 @@ const UpdateAvatar = () => {
       return;
     }
     try {
-      const response = await axios.post(`${apiUrl}/users/user/upload-avatar/${user?.userId}`, formData);
+      const response = await axios.post(`${apiUrl}/users/user/upload-avatar/${user?.userId}`, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          "authtoken":user?.accessToken || ""
+        }
+      });
       if (response.status === 200) {
         // Handle successful avatar update
         toast({
@@ -43,7 +48,7 @@ const UpdateAvatar = () => {
         });
       }
       setIsDialogOpen(false);
-      console.log(response)
+     
     } catch (error) {
       toast({
         title: "Error",

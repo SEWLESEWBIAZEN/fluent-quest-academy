@@ -1,9 +1,15 @@
-
 import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star } from "lucide-react"; // optional icons
 import { UserData } from "@/lib/types";
 import { getInitials } from "@/lib/getInitials";
 import UpdateAvatar from "./UpdateAvatar";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "../ui/button";
+import DeleteUser from "./DeleteUser";
+
 const UserProfile = ({ user }: { user: UserData }) => {
+
+const {user:usera} = useAuth()
+const ids={dbid:usera?.userId,fbid:usera?.id}
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -76,6 +82,9 @@ const UserProfile = ({ user }: { user: UserData }) => {
           <UserIcon className="w-4 h-4 text-gray-500" />
           <span>Last Updated: {new Date(user?.updatedAt).toLocaleDateString()}</span>
         </div>
+      </div>
+      <div className="flex w-full justify-end">
+        <DeleteUser ids={ids} accessToken={usera?.accessToken} />
       </div>
     </div>
   );
