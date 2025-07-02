@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import axios from 'axios'
 import { apiUrl } from '@/lib/envService'
 import { UserRole } from '@/lib/types'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from '@/hooks/use-toast'
 
 const UserRegistrationForm = ({ user }: { user: any }) => {
@@ -17,16 +17,26 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
   const [avatar, setAvatar] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false);
   const [role, setRole] = useState<UserRole>(UserRole.Student);
-  
-  if (user?.registered) {    
+  const navigate = useNavigate();
+
+  // Check if user is already registered
+  if (user?.registered) {
     toast({
       title: "Success",
-      description: "Already Registred!",
+      description: "Already Registered!",
       variant: "primary"
     })
-    return <Navigate to= "/dashboard" replace/>
-  } 
+    return <Navigate to="/dashboard" replace />
+  }
 
+  // Handle form cancellation
+  function handleCancel(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    // Handle cancel logic here
+    navigate("/")
+  }
+
+  // Handle form submission
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
@@ -75,14 +85,16 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
         variant: "destructive",
       });
     }
+    finally {
+      setIsLoading(false)
+    }
   }
 
-
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div className='grid lg:grid-cols-3 sm:grid-cols-2  grid-cols-1 lg:gap-4  sm:gap-2 mt-6'>
         <div className="space-y-2">
-          <Label htmlFor="username">User Name</Label>
+          <Label htmlFor="username" >User Name</Label>
           <Input
             id="username"
             value={username}
@@ -153,14 +165,18 @@ const UserRegistrationForm = ({ user }: { user: any }) => {
         </RadioGroup>
       </div>
       <div className='flex justify-end gap-2 items-center'>
-        <Button variant='outline'>
-          Cancel
-        </Button>
-        <Button type="submit" className="" disabled={isLoading}>
-          {isLoading ? 'Creating Account...' : 'Create Account'}
-        </Button>
+        <form onSubmit={handleCancel}>
+          <Button type="submit" variant="outline">
+            Cancel
+          </Button>
+        </form>
+        <form onSubmit={handleSubmit}>
+          <Button type="submit" className="" disabled={isLoading}>
+            {isLoading ? 'Creating Account...' : 'Create Account'}
+          </Button>
+        </form >
       </div>
-    </form>
+    </>
   )
 }
 

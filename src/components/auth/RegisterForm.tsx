@@ -73,6 +73,7 @@ const RegisterForm: React.FC = () => {
       return;
     }
 
+    try{
     if (email.current && password.current) {
       const response = await signUp(email.current.value, password.current.value);
 
@@ -96,7 +97,16 @@ const RegisterForm: React.FC = () => {
       }
     }
     setIsLoading(false)
+  }catch(error:any){
+    toast({
+      title: "Error",
+      description: error.message || "Error Occured while creating the account!",
+      variant: "destructive"
+    });
+  }finally{
+    setIsLoading(false)
   }
+}
 
   // calculate the score of password strength
   useEffect(() => {

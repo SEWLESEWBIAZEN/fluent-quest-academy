@@ -25,20 +25,19 @@ const UserProfilePage = () => {
           }
         });
         setUserData(res.data?.data ?? null);
-      } catch (err) {        
+      } catch (err) {
         setError(true);
       } finally {
         setLoading(false);
       }
     };
 
-    if(user?.userId && user?.accessToken) {
+    if (user?.userId && user?.accessToken) {
       fetchUser();
-      
     }
   }, [user]);
 
-  if (loading || authLoading) {
+  if (loading && authLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <CircularProgress />
@@ -57,16 +56,20 @@ const UserProfilePage = () => {
         <div className="lg:max-w-2xl md:max-w-md mx-auto bg-transparent p-8 rounded-lg ">
           {
             (error || !userData) ?
-              <div className="w-full justify-center flex items-center text-2xl font-bold ">OOPS...., User Not found!</div> :
+              <div>
+                <div className="w-full justify-center flex items-center text-2xl font-bold ">
+                  OOPS...., User has Not complete information!
+                </div>
+              </div>:
               <>
-              <div className="flex flex-col md:flex-row w-full justify-between items-start">
-                {/* <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">
+                <div className="flex flex-col md:flex-row w-full justify-between items-start">
+                  {/* <h1 className="text-2xl text-gradient-custom capitalize font-semibold mb-6 text-center">
                   {userData?.name ?? "Guest User"}'s Profile
                 </h1> */}
-                <div className="text-center mb-4 flex w-full justify-end">
-                  <UserUpdateForm userData={userData ?? {}} />
+                  <div className="text-center mb-4 flex w-full justify-end">
+                    <UserUpdateForm userData={userData ?? {}} />
+                  </div>
                 </div>
-                </div>            
                 <UserProfile user={userData} />
               </>
           }

@@ -11,11 +11,10 @@ const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string },
     const [isLoading, setIsLoading] = React.useState(false);
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-    const navigate = useNavigate();
-
     async function handleDeleteUser(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         // Add your delete logic here
+        setIsLoading(true);
         try {
             const response = await axios.delete(`${apiUrl}/users/user/delete?dbid=${ids?.dbid}&fbid=${ids?.fbid}`, {
                 headers: {
@@ -29,7 +28,7 @@ const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string },
                     description: response?.data?.message ?? "User deleted successfully!",
                     variant: "default"
                 });
-                
+
 
             } else {
                 toast({
@@ -69,7 +68,7 @@ const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string },
                 <DialogFooter>
                     <Button onClick={() => setIsDialogOpen(false)} variant="outline" className="border border-gray-300 text-gray-700 dark:text-gray-400 hover:border-gray-400 hover:text-gray-800">Cancel</Button>
                     <form onSubmit={handleDeleteUser}>
-                        <Button variant="outline" type='submit' className="border border-red-500 text-red-500 hover:border-red-600 hover:text-red-600">Delete</Button>
+                        <Button disabled={isLoading} variant="outline" type='submit' className="border border-red-500 text-red-500 hover:border-red-600 hover:text-red-600">{isLoading ? "Deleting..." : "Delete"}</Button>
                     </form>
                 </DialogFooter>
             </DialogContent>
