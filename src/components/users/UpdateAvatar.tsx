@@ -13,9 +13,25 @@ const UpdateAvatar = () => {
   const formData = new FormData();
   const { user } = useAuth()
 
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event?.target?.files?.[0];
+    if (file) {
+      formData.append("file", file);
+    }
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
+    if (!formData.has("file")) {
+      toast({
+        title: "Error",
+        description: "Please select a file to upload",
+        variant: "destructive"
+      });
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await axios.post(`${apiUrl}/users/user/upload-avatar/${user?.userId}`, formData);
       if (response.status === 200) {
@@ -34,7 +50,6 @@ const UpdateAvatar = () => {
         description: error?.message || "Failed to update avatar",
         variant: "destructive"
       });
-
       
     } finally {
       setIsLoading(false);
@@ -48,12 +63,7 @@ const UpdateAvatar = () => {
       <DialogContent>
         <DialogTitle>Update Avatar</DialogTitle>
         <form onSubmit={handleSubmit} className="">
-          <input type="file" accept="image/*" className='cursor-pointer' onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              formData.append("file", file);
-            }
-          }} />
+          <input type="file" accept="image/*" className='cursor-pointer' onChange={handleFileChange} />
 
           <div className=' flex justify-end'>
             <Button disabled={isLoading} type="submit">{isLoading ? "Uploading..." : "Update"}</Button>

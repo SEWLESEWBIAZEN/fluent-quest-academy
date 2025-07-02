@@ -27,8 +27,8 @@ const CourseDetail: React.FC = () => {
   
   const handleEnroll = () => {
     if (!user) {
-      // Redirect to login
-      return;
+
+      return <Navigate to="/login" replace />;
     }
     enrollInCourse(course.id);
   };
@@ -82,7 +82,7 @@ const CourseDetail: React.FC = () => {
           </div>
           
           <div className="md:col-span-1">
-            <div className="bg-background rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-background rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
               <img
                 src={course.imageUrl}
                 alt={course.title}
@@ -121,18 +121,18 @@ const CourseDetail: React.FC = () => {
           </TabsList>
           <TabsContent value="lessons" className="pt-6">
             <div className="space-y-4">
-              {lessons.length > 0 ? (
-                lessons.map((lesson) => (
+              {lessons?.length > 0 ? (
+                lessons?.map((lesson) => (
                   <Card key={lesson.id}>
                     <CardContent className="p-4 flex items-center justify-between">
                       <div className="flex items-center">
                         <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center mr-4">
-                          <span>{lesson.order}</span>
+                          <span>{lesson?.order}</span>
                         </div>
                         <div>
-                          <h4 className="font-medium">{lesson.title}</h4>
+                          <h4 className="font-medium">{lesson?.title}</h4>
                           <p className="text-sm text-gray-500">
-                            {lesson.duration} min • {lesson.type.charAt(0).toUpperCase() + lesson.type.slice(1)}
+                            {lesson?.duration} min • {lesson?.type.charAt(0).toUpperCase() + lesson?.type.slice(1)}
                           </p>
                         </div>
                       </div>

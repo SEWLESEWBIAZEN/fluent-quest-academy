@@ -7,6 +7,7 @@ import Layout from "@/components/layout/Layout";
 import UserProfile from "@/components/users/UserProfile";
 import CircularProgress from "@/components/layout/CircularProgress";
 import UserUpdateForm from "@/components/users/UserUpdateForm";
+// import axiosClient from '@/lib/axiosService'
 
 const UserProfilePage = () => {
   const { user, isLoading: authLoading } = useAuth();
@@ -21,8 +22,8 @@ const UserProfilePage = () => {
         const res = await axios.get(`${apiUrl}/users/user-by-id/${user?.userId}`, {
           headers: {
             authToken: user?.accessToken ?? "",
-          },
-        });       
+          }
+        });
         setUserData(res.data?.data ?? null);
       } catch (err) {        
         setError(true);
