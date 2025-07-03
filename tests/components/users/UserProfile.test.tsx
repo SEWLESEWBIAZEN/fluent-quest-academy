@@ -1,6 +1,5 @@
 import { it, expect, describe } from 'vitest'
 import {render,screen} from '@testing-library/react'
-import '@testing-library/jest-dom'
 import UserProfile from '../../../src/components/users/UserProfile'
 import { AuthProvider } from "../../../src/contexts/AuthContext";
 import {getInitials} from '../../../src/lib/getInitials'
