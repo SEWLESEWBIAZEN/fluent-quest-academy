@@ -1,8 +1,8 @@
 import { BadgeCheck, UserIcon, Mail, Phone, Calendar, Star } from "lucide-react"; // optional icons
 import { UserData } from "@/lib/types";
-import { getInitials } from "@/lib/getInitials";
+import { getInitials } from "../../lib/getInitials";
 import UpdateAvatar from "./UpdateAvatar";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import DeleteUser from "./DeleteUser";
 
 const UserProfile = ({ user }: { user: UserData }) => {
@@ -16,6 +16,7 @@ const ids={dbid:usera?.userId,fbid:usera?.id}
       <div className="relative group ">
         {user?.avatar ? (     
           <img
+            role="img"
             src={user?.avatar}
             alt="User Avatar"
             className="h-16 w-16 md:h-24 md:w-24 rounded-full object-cover border-2 border-brand-900 shadow group-hover:blur-md"
@@ -27,7 +28,7 @@ const ids={dbid:usera?.userId,fbid:usera?.id}
         )}
         {user?.verified && (
           <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow">
-            <BadgeCheck className="w-5 h-5 text-brand-800" />
+            <BadgeCheck role="img" className="w-5 h-5 text-brand-800" aria-label="verified user"/>
           </div>
         )}
         <div className="absolute top-[30%] right-[30%] ">

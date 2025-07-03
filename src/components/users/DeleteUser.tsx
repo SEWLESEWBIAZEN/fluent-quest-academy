@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
-import { Navigate, useNavigate } from 'react-router-dom';
 import { logout } from '@/config/firebase/authenticate';
 
 const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string }, accessToken: string }) => {

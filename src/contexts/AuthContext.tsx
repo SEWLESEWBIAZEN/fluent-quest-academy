@@ -9,10 +9,10 @@ import {
   onAuthStateChanged,
   User as FirebaseUser
 } from "firebase/auth";
-import { useToast } from "@/hooks/use-toast";
-import { apiUrl } from "@/lib/envService";
+import { useToast } from "../hooks/use-toast";
+import { apiUrl } from "../lib/envService";
 import axios from "axios";
-import { auth } from "@/config/firebase/config";
+import { auth } from "../config/firebase/config";
 
 const initialState: AuthState = {
   user: null,

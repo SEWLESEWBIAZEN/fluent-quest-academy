@@ -3,9 +3,9 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { PencilIcon } from 'lucide-react'
 import { Button } from '../ui/button';
 import axios from 'axios';
-import { apiUrl } from '@/lib/envService';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from '@/hooks/use-toast';
+import { apiUrl } from '../../lib/envService';
+import { useAuth } from '../../contexts/AuthContext';
+import { toast } from '../../hooks/use-toast';
 
 const UpdateAvatar = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,10 +61,10 @@ const UpdateAvatar = () => {
     }
 
   }
-  return (
+  return (          
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>
-        <PencilIcon className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer"  onClick={() => setIsDialogOpen(true)} /></DialogTrigger>
+        <PencilIcon role='title' className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer" aria-label='Update Avatar' onClick={() => setIsDialogOpen(true)} /></DialogTrigger>
       <DialogContent>
         <DialogTitle>Update Avatar</DialogTitle>
         <form onSubmit={handleSubmit} className="">
@@ -76,6 +76,7 @@ const UpdateAvatar = () => {
         </form>
       </DialogContent>
     </Dialog>
+  
   )
 }
 
