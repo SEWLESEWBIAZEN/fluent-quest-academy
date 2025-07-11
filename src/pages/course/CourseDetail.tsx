@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useCourse } from '@/contexts/CourseContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,11 +9,15 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
+import axios from 'axios';
+import { apiUrl } from '@/lib/envService';
+import { Language } from '@/lib/types';
 
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { getCourseById, getLessonsByCourseId, enrollInCourse, getUserProgress } = useCourse();
   const { user } = useAuth();
+  const [courseLanguage, setCourseLanguage] = useState<Language | null>(null);
   
   const course = id ? getCourseById(id) : undefined;
   const lessons = id ? getLessonsByCourseId(id) : [];
@@ -22,7 +26,7 @@ const CourseDetail: React.FC = () => {
     return <Navigate to="/courses" replace />;
   }
   
-  const isEnrolled = user?.enrolledCourses?.includes(course.id);
+  const isEnrolled = user?.enrolledCourses?.includes(course?._id);
   const progress = id ? getUserProgress(id) : 0;
   
   const handleEnroll = () => {
@@ -30,19 +34,33 @@ const CourseDetail: React.FC = () => {
 
       return <Navigate to="/login" replace />;
     }
-    enrollInCourse(course.id);
+    enrollInCourse(course?._id);
   };
-  
+
+    useEffect(() => {
+    const fetchLanguageById = async () => {
+      const response = await axios(`${apiUrl}/languages/getById/${course?.language_id}`, {
+        headers: {
+          "authToken": user?.accessToken ?? ""
+        }
+      })
+      setCourseLanguage(response?.data?.data);
+    }
+    fetchLanguageById();
+
+
+  }, [course?._id, user])
+  const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
-              <span className="text-2xl mr-2">{course.language.flag}</span>
-              <span className="text-lg text-gray-600 dark:text-gray-400">{course.language.name}</span>
-              <div className={`ml-3 language-level-badge language-level-${course.level}`}>
-                {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+              <span className="text-2xl mr-2">{courseLanguage?.flag}</span>
+              <span className="text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
+              <div className={`ml-3 language-level-badge language-level-${course?.language_level}`}>
+                {course?.language_level.charAt(0).toUpperCase() + course?.language_level.slice(1)}
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">{course.title}</h1>
@@ -51,12 +69,12 @@ const CourseDetail: React.FC = () => {
             <div className="flex flex-wrap gap-6 mb-6">
               <div className="flex items-center">
                 <span className="text-yellow-500 mr-1">★</span>
-                <span className="font-medium">{course.rating}</span>
-                <span className="text-gray-500 ml-1">({course.studentCount} students)</span>
+                <span className="font-medium">{course?.rating}</span>
+                <span className="text-gray-500 ml-1">({course?.studentCount ?? 0} students)</span>
               </div>
               <div className="flex items-center">
                 <span className="text-gray-500 mr-1">🕒</span>
-                <span>{Math.floor(course.duration / 60)} hours</span>
+                <span>{(course.duration / 60).toFixed(2)} hours</span>
               </div>
               <div className="flex items-center">
                 <span className="text-gray-500 mr-1">📚</span>
@@ -84,7 +102,7 @@ const CourseDetail: React.FC = () => {
           <div className="md:col-span-1">
             <div className="bg-background rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
               <img
-                src={course.imageUrl}
+                src={courseThumbnail || "/placeholder.svg"}
                 alt={course.title}
                 className="w-full h-48 object-cover"
               />
@@ -93,7 +111,7 @@ const CourseDetail: React.FC = () => {
                 <ul className="space-y-2">
                   <li className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
-                    <span>Master key {course.language.name} vocabulary</span>
+                    <span>Master key {courseLanguage?.name} vocabulary</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>

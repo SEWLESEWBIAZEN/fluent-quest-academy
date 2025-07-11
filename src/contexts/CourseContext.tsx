@@ -1,29 +1,9 @@
+import { apiUrl } from "@/lib/envService";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
+import axios from "axios";
+import { Course, Language, LanguageLevel, UserData } from "@/lib/types";
 
-import React, { createContext, useContext, useState } from "react";
-
-export interface Language {
-  id: string;
-  name: string;
-  code: string;
-  flag: string;
-}
-
-export type CourseLevel = "beginner" | "intermediate" | "advanced";
-
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  language: Language;
-  level: CourseLevel;
-  teacherId: string;
-  imageUrl: string;
-  duration: number; // in minutes
-  totalLessons: number;
-  rating: number;
-  studentCount: number;
-  price: number; // 0 for free courses
-}
 
 export interface Lesson {
   id: string;
@@ -39,95 +19,14 @@ interface CourseContextType {
   languages: Language[];
   courses: Course[];
   lessons: Record<string, Lesson[]>; // courseId -> lessons
+  languageLevels: LanguageLevel[];
   enrollInCourse: (courseId: string) => void;
   getUserProgress: (courseId: string) => number;
   getCoursesByLanguage: (languageId: string) => Course[];
-  getCoursesByLevel: (level: CourseLevel) => Course[];
+  getCoursesByLevel: (level: string) => Course[];
   getCourseById: (id: string) => Course | undefined;
   getLessonsByCourseId: (courseId: string) => Lesson[];
 }
-
-// Mock data
-const MOCK_LANGUAGES: Language[] = [
-  { id: '1', name: 'Spanish', code: 'es', flag: '🇪🇸' },
-  { id: '2', name: 'French', code: 'fr', flag: '🇫🇷' },
-  { id: '3', name: 'German', code: 'de', flag: '🇩🇪' },
-  { id: '4', name: 'Japanese', code: 'ja', flag: '🇯🇵' },
-  { id: '5', name: 'Mandarin', code: 'zh', flag: '🇨🇳' },
-];
-
-const MOCK_COURSES: Course[] = [
-  {
-    id: '1',
-    title: 'Spanish for Beginners',
-    description: 'Learn the basics of Spanish with our comprehensive course for beginners.',
-    language: MOCK_LANGUAGES[0],
-    level: 'beginner',
-    teacherId: '2',
-    imageUrl: '/placeholder.svg',
-    duration: 600, // 10 hours
-    totalLessons: 20,
-    rating: 4.5,
-    studentCount: 1250,
-    price: 0,
-  },
-  {
-    id: '2',
-    title: 'Intermediate French',
-    description: 'Take your French to the next level with our intermediate course.',
-    language: MOCK_LANGUAGES[1],
-    level: 'intermediate',
-    teacherId: '2',
-    imageUrl: '/placeholder.svg',
-    duration: 720, // 12 hours
-    totalLessons: 24,
-    rating: 4.7,
-    studentCount: 950,
-    price: 29.99,
-  },
-  {
-    id: '3',
-    title: 'Business German',
-    description: 'Learn German for business contexts and professional communication.',
-    language: MOCK_LANGUAGES[2],
-    level: 'advanced',
-    teacherId: '2',
-    imageUrl: '/placeholder.svg',
-    duration: 540, // 9 hours
-    totalLessons: 18,
-    rating: 4.8,
-    studentCount: 780,
-    price: 39.99,
-  },
-  {
-    id: '4',
-    title: 'Japanese for Travelers',
-    description: 'Master essential Japanese phrases and cultural tips for your trip to Japan.',
-    language: MOCK_LANGUAGES[3],
-    level: 'beginner',
-    teacherId: '2',
-    imageUrl: '/placeholder.svg',
-    duration: 420, // 7 hours
-    totalLessons: 14,
-    rating: 4.6,
-    studentCount: 1500,
-    price: 19.99,
-  },
-  {
-    id: '5',
-    title: 'Mandarin Conversation Skills',
-    description: 'Enhance your Mandarin speaking abilities with interactive conversation practice.',
-    language: MOCK_LANGUAGES[4],
-    level: 'intermediate',
-    teacherId: '2',
-    imageUrl: '/placeholder.svg',
-    duration: 660, // 11 hours
-    totalLessons: 22,
-    rating: 4.9,
-    studentCount: 850,
-    price: 34.99,
-  },
-];
 
 // Mock lessons for the first course
 const MOCK_LESSONS: Record<string, Lesson[]> = {
@@ -190,20 +89,49 @@ const MOCK_LESSONS: Record<string, Lesson[]> = {
     },
   ],
 };
-
 // Create the context
 const CourseContext = createContext<CourseContextType | undefined>(undefined);
 
 export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [courses] = useState<Course[]>(MOCK_COURSES);
-  const [languages] = useState<Language[]>(MOCK_LANGUAGES);
-  const [lessons] = useState<Record<string, Lesson[]>>(MOCK_LESSONS);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [teachers, setTeachers] = useState<UserData[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [languageLevels, setLanguageLevels] = useState<LanguageLevel[]>([]);
+  const [lessons, setLessons] = useState<Record<string, Lesson[]>>(MOCK_LESSONS);
   const [userProgress] = useState<Record<string, number>>({
     '1': 25, // 25% progress in course 1
   });
 
+  const { user } = useAuth()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const headers = {
+          authToken: user?.accessToken ?? ""
+        };
+
+        const [languagesRes, levelsRes, teachersRes, courseRes] = await Promise.all([
+          axios.get(`${apiUrl}/languages/getAll`, { headers }),
+          axios.get(`${apiUrl}/languageLevels/getAll`, { headers }),
+          axios.get(`${apiUrl}/users/getAllTeachers`, { headers }),
+          axios.get(`${apiUrl}/courses/getAll`, { headers })
+        ]);
+
+        setLanguages(languagesRes?.data?.data ?? []);
+        setLanguageLevels(levelsRes?.data?.data ?? []);
+        setTeachers(teachersRes?.data?.data ?? []);
+        setCourses(courseRes?.data?.data ?? []);
+      } catch (error: any) {
+        console.error("Error fetching initial data:", error?.message);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
   const enrollInCourse = (courseId: string) => {
- 
+
     // In a real app, this would update the user's enrolled courses in the backend
   };
 
@@ -212,15 +140,15 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const getCoursesByLanguage = (languageId: string) => {
-    return courses.filter((course) => course.language.id === languageId);
+    return courses?.filter((course) => course.language_id === languageId);
   };
 
-  const getCoursesByLevel = (level: CourseLevel) => {
-    return courses.filter((course) => course.level === level);
+  const getCoursesByLevel = (level: string) => {
+    return courses.filter((course) => course?.language_level === level);
   };
 
   const getCourseById = (id: string) => {
-    return courses.find((course) => course.id === id);
+    return courses.find((course) => course._id === id);
   };
 
   const getLessonsByCourseId = (courseId: string) => {
@@ -233,6 +161,7 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         languages,
         courses,
         lessons,
+        languageLevels,
         enrollInCourse,
         getUserProgress,
         getCoursesByLanguage,

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Language } from '@/contexts/CourseContext';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Language } from '@/lib/types';
 
 interface LanguageFilterProps {
   languages: Language[];
@@ -23,8 +23,8 @@ const LanguageFilter: React.FC<LanguageFilterProps> = ({
         </ToggleGroupItem>
         {languages.map((lang) => (
           <ToggleGroupItem 
-            key={lang.id}
-            value={lang.id}
+            key={lang._id}
+            value={lang._id}
             className="rounded-full px-4 py-2 text-sm"
           >
             <span className="mr-2">{lang.flag}</span>

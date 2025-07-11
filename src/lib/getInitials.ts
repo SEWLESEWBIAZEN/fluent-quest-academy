@@ -4,8 +4,8 @@ export const getInitials = (name: string) => {
   const last = parts[1] || "";
 
   return (
-    (first.charAt(0).toUpperCase() || "") +
-    (first.charAt(1).toUpperCase() || "") +
-    (last.charAt(0).toUpperCase() || "")
+    (first?.charAt(0).toUpperCase() || "") +
+    (first?.charAt(1).toUpperCase() || "") +
+    (last?.charAt(0).toUpperCase() || "")
   );
 };

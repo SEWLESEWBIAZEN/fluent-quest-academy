@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
-import { useCourse, CourseLevel } from '@/contexts/CourseContext';
+import { useCourse } from '@/contexts/CourseContext';
 import CourseCard from '@/components/courses/CourseCard';
 import LanguageFilter from '@/components/courses/LanguageFilter';
 import LevelFilter from '@/components/courses/LevelFilter';
@@ -10,12 +10,12 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Courses: React.FC = () => {
-  const { courses, languages } = useCourse();
+  const { courses, languages, languageLevels } = useCourse();
   const [search, setSearch] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
-  const [selectedLevel, setSelectedLevel] = useState<CourseLevel | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<string >(null);
 
-  const {user} =useAuth();
+  const {user} = useAuth();
   
   // Redirect to login if not authenticated
     if (!user) {
@@ -25,18 +25,18 @@ const Courses: React.FC = () => {
     
   const filteredCourses = courses.filter((course) => {
     // Filter by search term
-    if (search && !course.title.toLowerCase().includes(search.toLowerCase()) && 
-        !course.description.toLowerCase().includes(search.toLowerCase())) {
+    if (search && !course?.title?.toLowerCase().includes(search.toLowerCase()) && 
+        !course?.description?.toLowerCase().includes(search.toLowerCase())) {
       return false;
     }
     
     // Filter by language
-    if (selectedLanguage && course.language.id !== selectedLanguage) {
+    if (selectedLanguage && course.language_id !== selectedLanguage) {
       return false;
     }
     
     // Filter by level
-    if (selectedLevel && course.level !== selectedLevel) {
+    if (selectedLevel && course.language_level !== selectedLevel) {
       return false;
     }
     
@@ -72,8 +72,7 @@ const Courses: React.FC = () => {
                 languages={languages}
                 selectedLanguage={selectedLanguage}
                 onChange={(value) => setSelectedLanguage(value || null)}
-              />
-              
+              />              
               <LevelFilter
                 selectedLevel={selectedLevel}
                 onChange={setSelectedLevel}
@@ -84,10 +83,10 @@ const Courses: React.FC = () => {
           <div className="lg:col-span-3">
             {filteredCourses.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredCourses.map((course) => (
-                  <CourseCard key={course.id} course={course} />
+                {filteredCourses?.map((course) => (
+                  <CourseCard key={course._id} course={course} />
                 ))}
-              </div>
+              </div>  
             ) : (
               <div className="text-center py-12">
                 <p className="text-2xl font-medium text-gray-600 dark:text-gray-400">No courses found</p>

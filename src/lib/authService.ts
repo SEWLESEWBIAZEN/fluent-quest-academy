@@ -1,7 +1,5 @@
-
-
 class AuthService {  
-     public score: number = 0; // 👈 class attribute
+     public score: number = 0; // class attribute
   // Check password strength (same as before)  
   checkPasswordStrength(password: string): number {
     this.score = 0

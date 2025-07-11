@@ -1,13 +1,46 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import React from 'react'
 import { Button } from '../ui/button';
+import CreateCourse from './CreateCourse';
+import { useEffect, useState } from 'react';
+import { Language, LanguageLevel, UserData } from '@/lib/types';
+import axios from 'axios';
+import { apiUrl } from '@/lib/envService';
+import { useAuth } from '@/contexts/AuthContext';
 
 const CoursesManagement = () => {
+    const { user } = useAuth()
+    const [languages, setLanguages] = useState<Language[]>([]);
+    const [languageLevels, setLanguageLevels] = useState<LanguageLevel[]>([]);
+    const [teachers, setTeachers] = useState<UserData[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const headers = {
+                    authToken: user?.accessToken ?? ""
+                };
+
+                const [languagesRes, levelsRes, teachersRes] = await Promise.all([
+                    axios.get(`${apiUrl}/languages/getAll`, { headers }),
+                    axios.get(`${apiUrl}/languageLevels/getAll`, { headers }),
+                    axios.get(`${apiUrl}/users/getAllTeachers`, { headers })
+                ]);
+
+                setLanguages(languagesRes?.data?.data ?? []);
+                setLanguageLevels(levelsRes?.data?.data ?? []);
+                setTeachers(teachersRes?.data?.data ?? []);
+            } catch (error: any) {
+                console.error("Error fetching initial data:", error?.message);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">Courses Management</h2>
-                <Button>Create New Course</Button>
+                <CreateCourse languages={languages} languageLevels={languageLevels} teachers={teachers}/>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -62,7 +95,7 @@ const CoursesManagement = () => {
                         </div>
                         <h3 className="font-medium mb-2">Add New Course</h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Create a new language course</p>
-                        <Button>Create Course</Button>
+                        <CreateCourse languages={languages} languageLevels={languageLevels} teachers={teachers} />
                     </CardContent>
                 </Card>
             </div>

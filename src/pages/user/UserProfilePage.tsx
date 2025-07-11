@@ -61,7 +61,7 @@ const UserProfilePage = () => {
                 <div className="w-full justify-center flex flex-col items-center text-2xl font-bold">
                   <span className="text-2xl">OOOOPS...., </span>
                   <span className="text-red-400 text-sm font-thin">User has Not complete information!</span>
-                  <span className="text-white/50 mt-10 text-sm font-thin flex flex-row gap-3 items-center"><RefreshCcw size={14}/> Please refresh once.</span>
+                  <span className="dark:text-white/50  mt-10 text-sm font-thin flex flex-row gap-3 items-center"><RefreshCcw size={14}/> Please refresh once.</span>
                 </div>
               </div> :
               <>

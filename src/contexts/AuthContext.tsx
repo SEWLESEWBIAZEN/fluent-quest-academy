@@ -235,6 +235,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const verifyTwoFactor = async (code: string): Promise<boolean> => {
     // Your logic to verify the code with Firebase or custom backend
+    const intervalId = setInterval(() => {
+      const timeRemaining = getSessionTimeRemaining();
+      if (timeRemaining < 0) {
+        clearInterval(intervalId);
+        logout();
+      }
+    }, 1000);
+
     try {
       const response = await fetch('/api/verify-2fa', {
         method: 'POST',

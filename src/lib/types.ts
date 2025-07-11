@@ -53,3 +53,38 @@ export type UserData ={
         createdAt: string,
         updatedAt: string
 }
+
+export type Language = {
+  _id: string;
+  name: string;
+  code: string;
+  description:string;
+  flag:string;  
+}
+export type LanguageLevel = {
+  _id: string;
+  name: string;
+  code: string;
+  description:string;
+  category:string;  
+}
+
+export type Course = {
+  _id: string;
+  code: string;
+  title: string;
+  description: string;
+  language_id: string;
+  language_level: string;
+  teacherId: string;
+  thumbnail: string; // or `null` if you want to explicitly allow null
+  duration: number;
+  rating: number;
+  price: number;
+  totalLessons:number;
+  studentCount:number;
+  createdAt: string; // or Date if parsed
+  updatedAt: string; // or Date if parsed
+};
+
+
