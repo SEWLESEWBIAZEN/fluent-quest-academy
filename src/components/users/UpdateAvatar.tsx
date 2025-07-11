@@ -66,7 +66,7 @@ const UpdateAvatar = () => {
       <DialogTrigger>
         <PencilIcon role='title' className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer" aria-label='Update Avatar' onClick={() => setIsDialogOpen(true)} /></DialogTrigger>
       <DialogContent>
-        <DialogTitle>Update Avatar</DialogTitle>
+        <DialogTitle data-testid="update-avatar-dialog-title">Update Avatar</DialogTitle>
         <form onSubmit={handleSubmit} className="">
           <input type="file" accept="image/*" className='cursor-pointer' onChange={handleFileChange} />
 
@@ -81,3 +81,4 @@ const UpdateAvatar = () => {
 }
 
 export default UpdateAvatar
+

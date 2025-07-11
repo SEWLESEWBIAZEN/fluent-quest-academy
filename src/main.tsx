@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import storage from 'redux-persist/lib/storage' // ✅ this is a wrapper over localStorage
+import storage from 'redux-persist/lib/storage' //  this is a wrapper over localStorage
 import {
   persistReducer,
   persistStore,
@@ -45,3 +45,15 @@ root?.render(
         </PersistGate>
     </Provider>
 );
+
+// import React from "react";
+// import ReactDOM from "react-dom/client";
+// import "./index.css";
+// import App from "./App";
+
+
+// ReactDOM.createRoot(document.getElementById("root")!).render(
+//   <React.StrictMode>
+//     <App/>
+//   </React.StrictMode>
+// );

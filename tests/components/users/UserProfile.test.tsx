@@ -1,5 +1,6 @@
 import { it, expect, describe } from 'vitest'
-import {render,screen} from '@testing-library/react'
+import {fireEvent, render,screen} from '@testing-library/react'
+import '@testing-library/jest-dom'
 import UserProfile from '../../../src/components/users/UserProfile'
 import { AuthProvider } from "../../../src/contexts/AuthContext";
 import {getInitials} from '../../../src/lib/getInitials'
@@ -56,15 +57,17 @@ describe('UserProfile Component', () => {
 
         expect(screen.getByRole('img', { name: /verified/i })).toBeInTheDocument();
     });
-    it('renders UpdateAvatar component', () => {
+    it('renders Update Avatar component', () => {
         render(
           <AuthProvider>
             <UserProfile user={mockUser} />
           </AuthProvider>
         );
 
-        expect(screen.getByRole( 'title', { name: /update avatar/i })).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('title',{name:/update avatar/i}));
+        expect(screen.getByText(/update avatar/i)).toBeInTheDocument();        
     });
+    
     it('renders DeleteUser component', () => {
         render(
           <AuthProvider>
@@ -73,6 +76,8 @@ describe('UserProfile Component', () => {
         );
 
         expect(screen.getByText(/delete/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByRole('button',{name:/delete/i}));
+        fireEvent.click(screen.getByRole('button',{name:/cancel/i}));
     });
     it('displays user role in a badge', () => {
         render(

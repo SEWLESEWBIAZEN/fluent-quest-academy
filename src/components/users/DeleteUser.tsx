@@ -55,7 +55,7 @@ const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string },
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button onClick={() => setIsDialogOpen(true)} variant="outline" className="border border-red-500 text-brand-900 dark:text-white hover:border-white hover:text-red-500 hover:bg-transparent">Delete</Button>
+                <Button role='button' onClick={() => setIsDialogOpen(true)} variant="outline" className="border border-red-500 text-brand-900 dark:text-white hover:border-white hover:text-red-500 hover:bg-transparent">Delete</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

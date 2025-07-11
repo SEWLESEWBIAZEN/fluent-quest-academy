@@ -1,4 +1,5 @@
-import { it, expect, describe } from 'vitest'
+
+import { it, expect, describe, test } from 'vitest'
 
 describe('Main', () => {
   it('should work', () => {
@@ -7,7 +8,7 @@ describe('Main', () => {
 })
 
 describe('group', () => {
-  it('should work', () => {
+  test('should work', () => {
     expect(1).toBeTruthy()
   })
 })
