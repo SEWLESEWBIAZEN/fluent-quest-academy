@@ -22,7 +22,7 @@ const AdminPanel: React.FC = () => {
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-8">Admin Panel</h1>
         <Tabs defaultValue="courses" className="w-full">
-          <TabsList className="mb-8">
+          <TabsList className="mb-8 flex-1 flex-wrap justify-start">
             <TabsTrigger value="courses">My Courses</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="appointments">Appointments</TabsTrigger>
