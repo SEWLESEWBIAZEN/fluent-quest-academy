@@ -33,10 +33,10 @@ const UpdateAvatar = () => {
       return;
     }
     try {
-      const response = await axios.post(`${apiUrl}/users/user/upload-avatar/${user?.userId}`, formData,{
+      const response = await axios.post(`${apiUrl}/users/user/upload-avatar/${user?.userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          "authtoken":user?.accessToken || ""
+          "authtoken": user?.accessToken || ""
         }
       });
       if (response.status === 200) {
@@ -44,39 +44,48 @@ const UpdateAvatar = () => {
         toast({
           title: "Success",
           description: "Avatar updated successfully",
-          variant: "primary"         
+          variant: "primary"
         });
       }
       setIsDialogOpen(false);
-     
+
     } catch (error) {
       toast({
         title: "Error",
         description: error?.message || "Failed to update avatar",
         variant: "destructive"
       });
-      
+
     } finally {
       setIsLoading(false);
     }
 
   }
-  return (          
+  return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>
         <PencilIcon role='title' className="w-8 h-8 group-hover:block text-gray-500 hidden cursor-pointer" aria-label='Update Avatar' onClick={() => setIsDialogOpen(true)} /></DialogTrigger>
-      <DialogContent>
+      <DialogContent className=" space-y-4 w-[90%] md:w-full">
         <DialogTitle data-testid="update-avatar-dialog-title">Update Avatar</DialogTitle>
-        <form onSubmit={handleSubmit} className="">
-          <input type="file" accept="image/*" className='cursor-pointer' onChange={handleFileChange} />
 
-          <div className=' flex justify-end'>
-            <Button disabled={isLoading} type="submit">{isLoading ? "Uploading..." : "Update"}</Button>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="file"
+            accept="image/*"
+            className="cursor-pointer w-full"
+            onChange={handleFileChange}
+          />
+
+          <div className="flex justify-end">
+            <Button disabled={isLoading} type="submit">
+              {isLoading ? "Uploading..." : "Update"}
+            </Button>
           </div>
         </form>
       </DialogContent>
+
     </Dialog>
-  
+
   )
 }
 
