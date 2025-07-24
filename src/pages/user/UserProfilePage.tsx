@@ -38,7 +38,7 @@ const UserProfilePage = () => {
     }
   }, [user]);
 
-  if (loading && authLoading) {
+  if (loading || authLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <CircularProgress />
@@ -56,7 +56,7 @@ const UserProfilePage = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="lg:max-w-2xl md:max-w-md mx-auto bg-transparent p-8 rounded-lg ">
           {
-            ((error || !userData)) ?
+            ((error || !userData) && !loading && !authLoading) ?
               <div>
                 <div className="w-full justify-center flex flex-col items-center text-2xl font-bold">
                   <span className="text-2xl">OOOOPS...., </span>
