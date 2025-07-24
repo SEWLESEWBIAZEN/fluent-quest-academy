@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CourseProvider } from "@/contexts/CourseContext";
-
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -19,8 +17,6 @@ import NotFound from "./pages/NotFound";
 import CompleteRegistration from "./pages/user/CompleteRegistration";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import { ThemeProvider } from "./contexts/ThemeContext";
-
-
 
 const queryClient = new QueryClient();
 
@@ -55,3 +51,4 @@ const App = () => (
 );
 
 export default App;
+

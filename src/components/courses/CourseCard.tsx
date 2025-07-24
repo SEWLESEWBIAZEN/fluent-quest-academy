@@ -1,13 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Course, Language, LanguageLevel } from '@/lib/types';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { useAuth } from '@/contexts/AuthContext';
+import ReactCountryFlag from "react-country-flag"
 
 interface CourseCardProps {
   course: Course;
@@ -17,27 +17,28 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
   const [courseLanguage, setCourseLanguage] = useState<Language | null>(null);
   const [courseLevel, setCourseLevel] = useState<LanguageLevel | null>(null);
+
   const { user } = useAuth();
+
   const getLevelClass = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'language-level-beginner';
+        return 'language-level-beginner dark:bg-brand-800 dark:text-slate-200';
       case 'intermediate':
-        return 'language-level-intermediate';
+        return 'language-level-intermediate dark:bg-brand-800 dark:text-slate-200';
       case 'advanced':
-        return 'language-level-advanced';
+        return 'language-level-advanced dark:bg-brand-800 dark:text-slate-200';
       default:
-        return 'language-level-beginner';
+        return 'language-level-beginner dark:bg-brand-800 dark:text-slate-200';
     }
   };
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchLanguageById = async () => {
       try {
         const headers = {
           authToken: user?.accessToken ?? ""
         };
-
         const [courseLanguageRes, courseLevelsRes] = await Promise.all([
           axios.get(`${apiUrl}/languages/getById/${course?.language_id}`, { headers }),
           axios.get(`${apiUrl}/languageLevels/getById/${course?.language_level}`, { headers }),
@@ -46,16 +47,12 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
         setCourseLevel(courseLevelsRes?.data?.data);
       } catch (error) {
         console.error("Error fetching course data:", error);
-      }
-      
-      
+      }      
     }
     fetchLanguageById();
-
-
-  }, [course?._id, user])
+  }, [course?._id, user]);
   const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
-
+  console.log("course", course);
   return (
     <Link to={`/courses/${course?._id}`}>
       <Card className="h-full overflow-hidden hover:shadow-md transition-shadow">
@@ -66,14 +63,22 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
             className="w-full h-full object-cover"
           />
           <div className="absolute top-2 right-2">
-            <Badge className={getLevelClass(courseLevel?.name?.toLowerCase())}>
+            <Badge className={`${getLevelClass(courseLevel?.name?.toLowerCase())}`}>
               {courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)}
             </Badge>
           </div>
         </div>
         <CardContent className="p-4">
           <div className="flex items-center mb-2">
-            <span className="text-lg font-bold mr-2">{courseLanguage?.flag}</span>
+              <ReactCountryFlag
+                countryCode={courseLanguage?.flag || "US"}
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title={courseLanguage?.flag || "US"}
+                width={24}
+                height={12}
+            />
             <span className="text-sm text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
           </div>
           <h3 className="font-semibold text-lg mb-1">{course?.title}</h3>

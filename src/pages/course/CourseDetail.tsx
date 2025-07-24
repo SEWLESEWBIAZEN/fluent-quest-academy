@@ -11,14 +11,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
-import { Language } from '@/lib/types';
+import { Language, LanguageLevel } from '@/lib/types';
+import ReactCountryFlag from 'react-country-flag';
 
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { getCourseById, getLessonsByCourseId, enrollInCourse, getUserProgress } = useCourse();
   const { user } = useAuth();
   const [courseLanguage, setCourseLanguage] = useState<Language | null>(null);
-  
+  const [courseLevel, setCourseLevel] = useState<LanguageLevel | null>(null);
+
   const course = id ? getCourseById(id) : undefined;
   const lessons = id ? getLessonsByCourseId(id) : [];
   
@@ -37,19 +39,24 @@ const CourseDetail: React.FC = () => {
     enrollInCourse(course?._id);
   };
 
-    useEffect(() => {
+     useEffect(() => {
     const fetchLanguageById = async () => {
-      const response = await axios(`${apiUrl}/languages/getById/${course?.language_id}`, {
-        headers: {
-          "authToken": user?.accessToken ?? ""
-        }
-      })
-      setCourseLanguage(response?.data?.data);
+      try {
+        const headers = {
+          authToken: user?.accessToken ?? ""
+        };
+        const [courseLanguageRes, courseLevelsRes] = await Promise.all([
+          axios.get(`${apiUrl}/languages/getById/${course?.language_id}`, { headers }),
+          axios.get(`${apiUrl}/languageLevels/getById/${course?.language_level}`, { headers }),
+        ]);
+        setCourseLanguage(courseLanguageRes?.data?.data);
+        setCourseLevel(courseLevelsRes?.data?.data);
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+      }      
     }
     fetchLanguageById();
-
-
-  }, [course?._id, user])
+  }, [course?._id, user]);
   const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
   return (
     <Layout>
@@ -57,10 +64,19 @@ const CourseDetail: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
-              <span className="text-2xl mr-2">{courseLanguage?.flag}</span>
-              <span className="text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
-              <div className={`ml-3 language-level-badge language-level-${course?.language_level}`}>
-                {course?.language_level.charAt(0).toUpperCase() + course?.language_level.slice(1)}
+              {/* <span className="text-2xl mr-2">{courseLanguage?.flag}</span> */}
+               <ReactCountryFlag
+                              countryCode={courseLanguage?.flag || "US"}
+                              svg
+                              cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                              cdnSuffix="svg"
+                              title={courseLanguage?.flag || "US"}
+                              width={24}
+                              height={12}
+                          />
+              <span className="ms-2 text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
+              <div className={`ml-3 language-level-badge language-level-${courseLevel?.name?.toLowerCase()}`}>
+                {courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)}
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">{course.title}</h1>
