@@ -52,7 +52,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
     fetchLanguageById();
   }, [course?._id, user]);
   const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
-  console.log("course", course);
+ 
   return (
     <Link to={`/courses/${course?._id}`}>
       <Card className="h-full overflow-hidden hover:shadow-md transition-shadow">

@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
-import { Lock } from 'lucide-react';
+import { Lock, Settings } from 'lucide-react';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { Language, LanguageLevel } from '@/lib/types';
 import ReactCountryFlag from 'react-country-flag';
+import DeleteCourse from '@/components/courses/DeleteCourse';
 
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,14 +24,14 @@ const CourseDetail: React.FC = () => {
 
   const course = id ? getCourseById(id) : undefined;
   const lessons = id ? getLessonsByCourseId(id) : [];
-  
+
   if (!course) {
     return <Navigate to="/courses" replace />;
   }
-  
+
   const isEnrolled = user?.enrolledCourses?.includes(course?._id);
   const progress = id ? getUserProgress(id) : 0;
-  
+
   const handleEnroll = () => {
     if (!user) {
 
@@ -39,7 +40,7 @@ const CourseDetail: React.FC = () => {
     enrollInCourse(course?._id);
   };
 
-     useEffect(() => {
+  useEffect(() => {
     const fetchLanguageById = async () => {
       try {
         const headers = {
@@ -53,7 +54,7 @@ const CourseDetail: React.FC = () => {
         setCourseLevel(courseLevelsRes?.data?.data);
       } catch (error) {
         console.error("Error fetching course data:", error);
-      }      
+      }
     }
     fetchLanguageById();
   }, [course?._id, user]);
@@ -65,15 +66,15 @@ const CourseDetail: React.FC = () => {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               {/* <span className="text-2xl mr-2">{courseLanguage?.flag}</span> */}
-               <ReactCountryFlag
-                              countryCode={courseLanguage?.flag || "US"}
-                              svg
-                              cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-                              cdnSuffix="svg"
-                              title={courseLanguage?.flag || "US"}
-                              width={24}
-                              height={12}
-                          />
+              <ReactCountryFlag
+                countryCode={courseLanguage?.flag || "US"}
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title={courseLanguage?.flag || "US"}
+                width={24}
+                height={12}
+              />
               <span className="ms-2 text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
               <div className={`ml-3 language-level-badge language-level-${courseLevel?.name?.toLowerCase()}`}>
                 {courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)}
@@ -97,7 +98,7 @@ const CourseDetail: React.FC = () => {
                 <span>{course.totalLessons} lessons</span>
               </div>
             </div>
-            
+
             {isEnrolled && (
               <div className="mb-6">
                 <div className="flex justify-between text-sm mb-2">
@@ -107,14 +108,14 @@ const CourseDetail: React.FC = () => {
                 <Progress value={progress} className="h-2" />
               </div>
             )}
-            
+
             {!isEnrolled && (
               <Button onClick={handleEnroll} size="lg" className="mb-6">
                 {course.price === 0 ? 'Enroll for Free' : `Enroll for $${course.price.toFixed(2)}`}
               </Button>
             )}
           </div>
-          
+
           <div className="md:col-span-1">
             <div className="bg-background rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
               <img
@@ -146,12 +147,14 @@ const CourseDetail: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <Tabs defaultValue="lessons" className="w-full">
           <TabsList>
             <TabsTrigger value="lessons">Lessons</TabsTrigger>
             <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger> | &nbsp;
+            <TabsTrigger value="settings"><Settings className='h-5 w-5 bg-gray-200 dark:bg-gray-800 rounded-full p-1' /></TabsTrigger>
+
           </TabsList>
           <TabsContent value="lessons" className="pt-6">
             <div className="space-y-4">
@@ -174,7 +177,7 @@ const CourseDetail: React.FC = () => {
                         {isEnrolled ? (
                           <Button variant="outline" size="sm">Start</Button>
                         ) : (
-                          <Button variant="outline" size="sm" disabled><Lock/></Button>
+                          <Button variant="outline" size="sm" disabled><Lock /></Button>
                         )}
                       </div>
                     </CardContent>
@@ -194,6 +197,16 @@ const CourseDetail: React.FC = () => {
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
               <p className="text-gray-600 dark:text-gray-400">Reviews will appear here once students have completed the course.</p>
             </div>
+          </TabsContent>
+          <TabsContent value="settings" className="pt-6">
+            <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
+              <p className="text-gray-600 dark:text-gray-400">Settings about the course will appear here.</p>
+              <div className='flex gap-4 justify-end'>
+                <Button variant="outline" size="sm" className="mt-4">Save Changes</Button>               
+                <DeleteCourse id={course?._id} accessToken={user?.accessToken} />               
+              </div>
+            </div>
+
           </TabsContent>
         </Tabs>
       </div>
