@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import { useCourse } from '@/contexts/CourseContext';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/layout/Layout';
@@ -8,12 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
-import { Lock, Settings } from 'lucide-react';
+import { Lock, Plus, Settings } from 'lucide-react';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { Language, LanguageLevel } from '@/lib/types';
 import ReactCountryFlag from 'react-country-flag';
 import DeleteCourse from '@/components/courses/DeleteCourse';
+import AddLesson from '@/components/lessons/AddLesson';
 
 const CourseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -157,6 +158,12 @@ const CourseDetail: React.FC = () => {
 
           </TabsList>
           <TabsContent value="lessons" className="pt-6">
+
+              {/* <AddLesson /> */}
+            <Link to={`/courses/${course?._id}/lesson/add`} className="inline-block mb-2 -mt-2">
+              <Button variant="outline" size="sm" className='flex items-center'><Plus/> <span className='hidden md:inline'>Add Lesson</span></Button>
+            </Link>
+
             <div className="space-y-4">
               {lessons?.length > 0 ? (
                 lessons?.map((lesson) => (
@@ -179,7 +186,8 @@ const CourseDetail: React.FC = () => {
                         ) : (
                           <Button variant="outline" size="sm" disabled><Lock /></Button>
                         )}
-                      </div>
+                      </div>                      
+                    
                     </CardContent>
                   </Card>
                 ))
@@ -187,6 +195,10 @@ const CourseDetail: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">No lessons available for this course yet.</p>
               )}
             </div>
+
+          
+
+
           </TabsContent>
           <TabsContent value="resources" className="pt-6">
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">

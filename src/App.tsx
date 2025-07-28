@@ -17,10 +17,28 @@ import NotFound from "./pages/NotFound";
 import CompleteRegistration from "./pages/user/CompleteRegistration";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import AddLessonPage from "./pages/lesson/AddLessonPage";
+
+// Add trustedTypes to the Window interface for TypeScript
+declare global {
+  interface Window {
+    trustedTypes?: {
+      createPolicy: (
+        name: string,
+        rules: {
+          createHTML?: (input: string) => string;
+          createScript?: (input: string) => string;
+          createScriptURL?: (input: string) => string;
+        }
+      ) => void;
+    };
+  }
+}
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  return (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
     <TooltipProvider>
@@ -36,6 +54,7 @@ const App = () => (
               <Route path="/register/complete" element={<CompleteRegistration />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:id" element={<CourseDetail />} />
+              <Route path="/courses/:id/lesson/add" element={<AddLessonPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/admin/courses" element={<AdminPanel />} />
@@ -48,7 +67,8 @@ const App = () => (
     </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
-);
+)
+};
 
 export default App;
 

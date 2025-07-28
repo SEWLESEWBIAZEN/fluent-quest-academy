@@ -6,6 +6,7 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
 @layer base {
   :root {
     --background: 210 40% 98%;
@@ -32,8 +33,10 @@ body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --succes: 140 60% 85%; /* Light green background */
-    --succes-foreground: 145 30% 25%; /* Darker green for readable text */
+    --succes: 140 60% 85%;
+    /* Light green background */
+    --succes-foreground: 145 30% 25%;
+    /* Darker green for readable text */
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -75,9 +78,11 @@ body {
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-        
-    --succes: 140 60% 85%; /* Light green background */
-    --succes-foreground: 145 30% 25%; /* Darker green for readable text */
+
+    --succes: 140 60% 85%;
+    /* Light green background */
+    --succes-foreground: 145 30% 25%;
+    /* Darker green for readable text */
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
@@ -99,15 +104,15 @@ body {
   .language-level-badge {
     @apply inline-block px-2 py-0.5 rounded-full text-xs font-medium;
   }
-  
+
   .language-level-beginner {
-    @apply bg-blue-100  text-blue-800;
+    @apply bg-blue-100 text-blue-800;
   }
-  
+
   .language-level-intermediate {
     @apply bg-green-100 text-green-800;
   }
-  
+
   .language-level-advanced {
     @apply bg-purple-100 text-purple-800;
   }
@@ -115,8 +120,20 @@ body {
   .text-gradient-custom {
     @apply bg-gradient-to-r from-purple-300 to-brand-900 bg-clip-text text-transparent;
   }
+
   .bg-gradient-custom {
     @apply bg-gradient-to-r from-purple-300 to-brand-900;
   }
-  
+
 }
+
+/* Add this globally or in a utility file */
+.youtube-embed iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+

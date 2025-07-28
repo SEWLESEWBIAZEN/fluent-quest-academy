@@ -63,8 +63,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
             className="w-full h-full object-cover"
           />
           <div className="absolute top-2 right-2">
-            <Badge className={`${getLevelClass(courseLevel?.name?.toLowerCase())}`}>
-              {courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)}
+            <Badge  className={`${getLevelClass(courseLevel?.name?.toLowerCase())}`}>
+              {(courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)).toString()}
             </Badge>
           </div>
         </div>
