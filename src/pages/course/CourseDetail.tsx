@@ -45,19 +45,36 @@ const CourseDetail: React.FC = () => {
   useEffect(() => {
     const fetchLanguageById = async () => {
       try {
+
         const headers = {
           authToken: user?.accessToken ?? ""
         };
-        const [courseLanguageRes, courseLevelsRes, courseLessonsRes] = await Promise.all([
+
+        const [languageRes, levelRes, lessonsRes] = await Promise.allSettled([
           axios.get(`${apiUrl}/languages/getById/${course?.language_id}`, { headers }),
           axios.get(`${apiUrl}/languageLevels/getById/${course?.language_level}`, { headers }),
           axios.get(`${apiUrl}/lessons/getAll/${course?._id}`, { headers }),
-
         ]);
-        setCourseLanguage(courseLanguageRes?.data?.data);
-        setCourseLevel(courseLevelsRes?.data?.data);
-        setCourseLessons(courseLessonsRes?.data?.data);
-        dispatch(setLessons(courseLessonsRes?.data?.data));
+
+        if (languageRes.status === 'fulfilled') {
+          setCourseLanguage(languageRes.value.data.data);
+        } else {
+          console.warn('Failed to fetch course language:', languageRes.reason);
+        }
+
+        if (levelRes.status === 'fulfilled') {
+          setCourseLevel(levelRes.value.data.data);
+        } else {
+          console.warn('Failed to fetch course level:', levelRes.reason);
+        }
+
+        if (lessonsRes.status === 'fulfilled') {
+          setCourseLessons(lessonsRes.value.data.data);
+          dispatch(setLessons(lessonsRes.value.data.data));
+        } else {
+          console.warn('Failed to fetch lessons:', lessonsRes.reason);
+        }
+        
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
