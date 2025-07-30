@@ -14,9 +14,12 @@ import { apiUrl } from '@/lib/envService';
 import { Language, LanguageLevel } from '@/lib/types';
 import ReactCountryFlag from 'react-country-flag';
 import DeleteCourse from '@/components/courses/DeleteCourse';
-
-
+import { useDispatch } from 'react-redux';
+import { setLessons } from '../../redux/features/courseSlice';
 const CourseDetail: React.FC = () => {
+
+  const dispatch = useDispatch();
+
   const { courseId } = useParams<{ courseId: string }>();
   const { getCourseById, enrollInCourse, getUserProgress } = useCourse();
   const { user } = useAuth();
@@ -56,6 +59,7 @@ const CourseDetail: React.FC = () => {
         setCourseLanguage(courseLanguageRes?.data?.data);
         setCourseLevel(courseLevelsRes?.data?.data);
         setCourseLessons(courseLessonsRes?.data?.data);
+        dispatch(setLessons(courseLessonsRes?.data?.data));
       } catch (error) {
         console.error("Error fetching course data:", error);
       }

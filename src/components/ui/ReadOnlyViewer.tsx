@@ -28,51 +28,32 @@ type ReadOnlyViewerProps = {
 
 
 export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
-  content,
-  holderId = 'readonly-editor'
+  content
+
 }) => {
   const editorRef = useRef<EditorJS | null>(null);
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!editorRef.current) {
       editorRef.current = new EditorJS({
-        holder: holderId,
+        holder: editorContainerRef.current,
         readOnly: true,
         data: content,
         tools: {
           attaches: {
-            class: AttachesTool,
-            config: {
-              // endpoint: `${apiUrl}/lessons/lesson/uploadFileContent2`
-            }
+            class: AttachesTool,            
           },
           toggle: {
             class: ToggleBlock,
-            inlineToolbar: true,
           },
-          delimiter: {
-            class: Delimiter,
-            config: {
-              styleOptions: ['star', 'dash', 'line'],
-              defaultStyle: 'star',
-              lineWidthOptions: [8, 15, 25, 35, 50, 60, 100],
-              defaultLineWidth: 25,
-              lineThicknessOptions: [1, 2, 3, 4, 5, 6],
-              defaultLineThickness: 2,
-            },
-
-          },
+          delimiter: Delimiter, 
           drawingTool: {
-            class: DrawingTool,
+            class: DrawingTool,           
           },
           title: Title,
-          // carousel: {
-          //   class: SKMFlipBox,
-          //   inlineToolbar: true,
-          // },
           audio: {
-            class: AudioTool,
-
+            class: AudioTool,            
           },
           header: Header,
           linkTool: LinkTool,
@@ -80,8 +61,7 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           list: List,
           inlineCode: InlineCode,
           checklist: {
-            class: Checklist,
-            inlineToolbar: true,
+            class: Checklist,            
           },
           embed: {
             class: Embed,
@@ -94,12 +74,7 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           },
           table: Table,
           quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: 'CMD+SHIFT+O',
-            config: {
-              quotePlaceholder: 'Enter a quote',
-            },
+            class: Quote,            
           },
           image: SimpleImage,
         },
@@ -110,11 +85,11 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
     }
 
     return () => {
-      editorRef.current?.destroy();
+      editorRef.current?.destroy?.();
       editorRef.current = null;
     };
   }, [content]);
 
-  return <div id={holderId} className="m-0 p-0"
-    style={{ margin: 0, padding: 0 }} />;
+  return <div id="readonly-editor" className="m-0 p-0"
+    style={{ margin: 0, padding: 0 }} ref={editorContainerRef} />;
 };
