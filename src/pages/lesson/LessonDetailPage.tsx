@@ -13,9 +13,9 @@ import { RootState } from '../../redux/features/store'
 import { Lesson } from '@/types/lesson'
 import { useAuth } from '@/contexts/AuthContext'
 import LessonContents from '@/components/lessons/LessonContents'
-import LessonsNavBarMobile from './LessonsNavBarMobile'
-import SidebarNavigation from './SidebarNavigation'
-import MobileSidebarToggleButton from './MobileSidebarToggleButton'
+import LessonsNavBarMobile from '../../components/lessons/LessonsNavBarMobile'
+import SidebarNavigation from '../../components/lessons/SidebarNavigation'
+import MobileSidebarToggleButton from '../../components/lessons/MobileSidebarToggleButton'
 
 const LessonDetailPage = () => {
     const { user } = useAuth();
