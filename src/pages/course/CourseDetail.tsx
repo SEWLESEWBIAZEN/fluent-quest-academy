@@ -1,37 +1,37 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { useCourse } from '@/contexts/CourseContext';
+import { Lesson, useCourse } from '@/contexts/CourseContext';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from '@/components/ui/card';
-import { Lock, Plus, Settings } from 'lucide-react';
+import { ArrowLeft, Lock, Plus, Settings } from 'lucide-react';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { Language, LanguageLevel } from '@/lib/types';
 import ReactCountryFlag from 'react-country-flag';
 import DeleteCourse from '@/components/courses/DeleteCourse';
-import AddLesson from '@/components/lessons/AddLesson';
+
 
 const CourseDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { getCourseById, getLessonsByCourseId, enrollInCourse, getUserProgress } = useCourse();
+  const { courseId } = useParams<{ courseId: string }>();
+  const { getCourseById, enrollInCourse, getUserProgress } = useCourse();
   const { user } = useAuth();
   const [courseLanguage, setCourseLanguage] = useState<Language | null>(null);
   const [courseLevel, setCourseLevel] = useState<LanguageLevel | null>(null);
+  const [courseLessons, setCourseLessons] = useState<Lesson[]>([]);
 
-  const course = id ? getCourseById(id) : undefined;
-  const lessons = id ? getLessonsByCourseId(id) : [];
+  const course = courseId ? getCourseById(courseId) : undefined;
 
   if (!course) {
     return <Navigate to="/courses" replace />;
   }
 
   const isEnrolled = user?.enrolledCourses?.includes(course?._id);
-  const progress = id ? getUserProgress(id) : 0;
+  const progress = courseId ? getUserProgress(courseId) : 0;
 
   const handleEnroll = () => {
     if (!user) {
@@ -47,26 +47,38 @@ const CourseDetail: React.FC = () => {
         const headers = {
           authToken: user?.accessToken ?? ""
         };
-        const [courseLanguageRes, courseLevelsRes] = await Promise.all([
+        const [courseLanguageRes, courseLevelsRes, courseLessonsRes] = await Promise.all([
           axios.get(`${apiUrl}/languages/getById/${course?.language_id}`, { headers }),
           axios.get(`${apiUrl}/languageLevels/getById/${course?.language_level}`, { headers }),
+          axios.get(`${apiUrl}/lessons/getAll/${course?._id}`, { headers }),
+
         ]);
         setCourseLanguage(courseLanguageRes?.data?.data);
         setCourseLevel(courseLevelsRes?.data?.data);
+        setCourseLessons(courseLessonsRes?.data?.data);
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
     }
     fetchLanguageById();
   }, [course?._id, user]);
+
   const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
+        <div className='flex flex-1 justify-end mb-6 me-4'>
+          <Button>
+            <Link to={`/courses`} className='flex items-center gap-2 hover:ms-3  hover:text-primary'>
+              <ArrowLeft size={16} /> <span>Back to courses list</span>
+            </Link>
+          </Button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+
           <div className="md:col-span-2">
+
             <div className="flex items-center mb-4">
-              {/* <span className="text-2xl mr-2">{courseLanguage?.flag}</span> */}
               <ReactCountryFlag
                 countryCode={courseLanguage?.flag || "US"}
                 svg
@@ -158,47 +170,38 @@ const CourseDetail: React.FC = () => {
 
           </TabsList>
           <TabsContent value="lessons" className="pt-6">
-
-              {/* <AddLesson /> */}
-            <Link to={`/courses/${course?._id}/lesson/add`} className="inline-block mb-2 -mt-2">
-              <Button variant="outline" size="sm" className='flex items-center'><Plus/> <span className='hidden md:inline'>Add Lesson</span></Button>
-            </Link>
-
             <div className="space-y-4">
-              {lessons?.length > 0 ? (
-                lessons?.map((lesson) => (
-                  <Card key={lesson.id}>
-                    <CardContent className="p-4 flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center mr-4">
-                          <span>{lesson?.order}</span>
+              {courseLessons?.length > 0 ? (
+                courseLessons?.map((lesson) => (
+                  <Card key={lesson?._id}>
+                    <Link to={`/courses/${course?._id}/lesson/${lesson?._id}`}>
+                      <CardContent className="p-4 flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center mr-4">
+                            <span>{lesson?.order}</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{lesson?.title}</h4>
+                            <p className="text-sm text-gray-500">
+                              {lesson?.duration} min • {lesson?.type.charAt(0).toUpperCase() + lesson?.type.slice(1)}
+                            </p>
+                          </div>
                         </div>
                         <div>
-                          <h4 className="font-medium">{lesson?.title}</h4>
-                          <p className="text-sm text-gray-500">
-                            {lesson?.duration} min • {lesson?.type.charAt(0).toUpperCase() + lesson?.type.slice(1)}
-                          </p>
+                          {isEnrolled ? (
+                            <Button variant="outline" size="sm">Start</Button>
+                          ) : (
+                            <Button variant="outline" size="sm" disabled><Lock /></Button>
+                          )}
                         </div>
-                      </div>
-                      <div>
-                        {isEnrolled ? (
-                          <Button variant="outline" size="sm">Start</Button>
-                        ) : (
-                          <Button variant="outline" size="sm" disabled><Lock /></Button>
-                        )}
-                      </div>                      
-                    
-                    </CardContent>
+                      </CardContent>
+                    </Link>
                   </Card>
                 ))
               ) : (
                 <p className="text-gray-600 dark:text-gray-400">No lessons available for this course yet.</p>
               )}
             </div>
-
-          
-
-
           </TabsContent>
           <TabsContent value="resources" className="pt-6">
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
@@ -214,8 +217,8 @@ const CourseDetail: React.FC = () => {
             <div className="bg-background border dark:border-gray-900 border-gray-200  rounded-lg p-6">
               <p className="text-gray-600 dark:text-gray-400">Settings about the course will appear here.</p>
               <div className='flex gap-4 justify-end'>
-                <Button variant="outline" size="sm" className="mt-4">Save Changes</Button>               
-                <DeleteCourse id={course?._id} accessToken={user?.accessToken} />               
+                <Button variant="outline" size="sm" className="mt-4">Save Changes</Button>
+                <DeleteCourse id={course?._id} accessToken={user?.accessToken} />
               </div>
             </div>
 

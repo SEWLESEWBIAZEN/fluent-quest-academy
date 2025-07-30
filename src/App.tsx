@@ -17,7 +17,8 @@ import NotFound from "./pages/NotFound";
 import CompleteRegistration from "./pages/user/CompleteRegistration";
 import UserProfilePage from "./pages/user/UserProfilePage";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import AddLessonPage from "./pages/lesson/AddLessonPage";
+import AddContentPage from "./pages/lesson/content/AddContentPage";
+import LessonDetailPage from "./pages/lesson/LessonDetailPage";
 
 // Add trustedTypes to the Window interface for TypeScript
 declare global {
@@ -53,8 +54,9 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/register/complete" element={<CompleteRegistration />} />
               <Route path="/courses" element={<Courses />} />
-              <Route path="/courses/:id" element={<CourseDetail />} />
-              <Route path="/courses/:id/lesson/add" element={<AddLessonPage />} />
+              <Route path="/courses/:courseId" element={<CourseDetail />} />
+              <Route path="/courses/:courseId/lesson/:lessonId" element={<LessonDetailPage />} />
+              <Route path="/courses/:courseId/lesson/:lessonId/content/add" element={<AddContentPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/admin/courses" element={<AdminPanel />} />
