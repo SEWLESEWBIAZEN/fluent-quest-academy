@@ -23,11 +23,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, progress }) => {
   const getLevelClass = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'language-level-beginner dark:bg-brand-800 dark:text-slate-200';
+        return 'language-level-beginner bg-brand-800 dark:text-slate-200';
       case 'intermediate':
-        return 'language-level-intermediate dark:bg-brand-800 dark:text-slate-200';
+        return 'language-level-intermediate dark:bg-orange-800 dark:text-slate-200';
       case 'advanced':
-        return 'language-level-advanced dark:bg-brand-800 dark:text-slate-200';
+        return 'language-level-advanced bg-purple-800 dark:text-slate-200';
       default:
         return 'language-level-beginner dark:bg-brand-800 dark:text-slate-200';
     }

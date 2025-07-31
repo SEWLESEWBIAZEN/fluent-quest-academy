@@ -14,6 +14,7 @@ import CourseTabs from '../../components/courses/CourseTabs';
 import CourseHighlight from '../../components/courses/CourseHighlight';
 import CourseIntro from '../../components/courses/CourseIntro';
 const CourseDetail: React.FC = () => {
+
   const dispatch = useDispatch();
 
   const { courseId } = useParams<{ courseId: string }>();
@@ -27,54 +28,48 @@ const CourseDetail: React.FC = () => {
     return courseId ? getCourseById(courseId) : undefined;
   }, [courseId, getCourseById]);
 
+  if (!user) {
+
+    return <Navigate to="/login" replace />;
+  }
   if (!course) {
     return <Navigate to="/courses" replace />;
   }
-
   const isEnrolled = user?.enrolledCourses?.includes(course?._id);
   const progress = courseId ? getUserProgress(courseId) : 0;
 
   const handleEnroll = () => {
-    if (!user) {
-
-      return <Navigate to="/login" replace />;
-    }
     enrollInCourse(course?._id);
   };
 
   useEffect(() => {
     const fetchLanguageById = async () => {
       try {
-
         const headers = {
           authToken: user?.accessToken ?? ""
         };
-
         const [languageRes, levelRes, lessonsRes] = await Promise.allSettled([
           axios.get(`${apiUrl}/languages/getById/${course?.language_id}`, { headers }),
           axios.get(`${apiUrl}/languageLevels/getById/${course?.language_level}`, { headers }),
           axios.get(`${apiUrl}/lessons/getAll/${course?._id}`, { headers }),
         ]);
-
         if (languageRes.status === 'fulfilled') {
           setCourseLanguage(languageRes.value.data.data);
         } else {
           console.warn('Failed to fetch course language:', languageRes.reason);
         }
-
         if (levelRes.status === 'fulfilled') {
           setCourseLevel(levelRes.value.data.data);
         } else {
           console.warn('Failed to fetch course level:', levelRes.reason);
         }
-
         if (lessonsRes.status === 'fulfilled') {
           setCourseLessons(lessonsRes.value.data.data);
           dispatch(setLessons(lessonsRes.value.data.data));
         } else {
           console.warn('Failed to fetch lessons:', lessonsRes.reason);
         }
-        
+
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
@@ -95,13 +90,24 @@ const CourseDetail: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* course intro */}
-          <CourseIntro course={course} courseLanguage={courseLanguage} courseLevel={courseLevel} isEnrolled={isEnrolled} progress={progress} handleEnroll={handleEnroll} />
-
-          <CourseHighlight course={course} courseLanguage={courseLanguage} />
-
+          <CourseIntro
+            course={course}
+            courseLanguage={courseLanguage}
+            courseLevel={courseLevel}
+            isEnrolled={isEnrolled}
+            progress={progress}
+            handleEnroll={handleEnroll}
+          />
+          <CourseHighlight
+            course={course}
+            courseLanguage={courseLanguage}
+          />
         </div>
-
-        <CourseTabs courseLessons={courseLessons} course={course} isEnrolled={isEnrolled} />
+        <CourseTabs
+          courseLessons={courseLessons}
+          course={course}
+          isEnrolled={isEnrolled}
+        />
       </div>
     </Layout>
   );
