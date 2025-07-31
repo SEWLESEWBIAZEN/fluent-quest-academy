@@ -9,16 +9,14 @@ import ApplicationSettings from '@/components/generals/ApplicationSettings';
 import AppointmentSettings from '@/components/appointments/AppointmentSettings';
 import StudentManagement from '@/components/students/StudentManagement';
 import CoursesManagement from '@/components/courses/CoursesManagement';
-import { useSessionCheck } from '@/hooks/useSessionCheck';
 
 const AdminPanel: React.FC = () => {
-   const { user } = useAuth();
-   useSessionCheck();
+   const { user } = useAuth(); 
 
-  // // Redirect if not logged in or not a teacher/admin
-  // if (!user || (user.role !== 'teacher' && user.role !== 'admin')) {
-  //   return <Navigate to="/login" replace />;
- // }
+  // Redirect if not logged in or not a teacher/admin
+  if (!user || (user?.role !== 'teacher' && user?.role !== 'admin')) {
+    return <Navigate to="/login" replace />;
+ }
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">

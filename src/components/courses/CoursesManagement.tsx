@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '../ui/button';
 import CreateCourse from './CreateCourse';
 import { useEffect, useState } from 'react';
-import { Language, LanguageLevel, UserData } from '@/lib/types';
+import { Course, Language, LanguageLevel, UserData } from '@/lib/types';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,6 +12,9 @@ const CoursesManagement = () => {
     const [languages, setLanguages] = useState<Language[]>([]);
     const [languageLevels, setLanguageLevels] = useState<LanguageLevel[]>([]);
     const [teachers, setTeachers] = useState<UserData[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
+
+    const getCoursesUrl = user?.role === 'admin' ? `${apiUrl}/courses/getAll` : `${apiUrl}/courses/getByInstructor/${user?.userId}`;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,15 +23,37 @@ const CoursesManagement = () => {
                     authToken: user?.accessToken ?? ""
                 };
 
-                const [languagesRes, levelsRes, teachersRes] = await Promise.all([
+                const [languagesRes, levelsRes, teachersRes, coursesRes] = await Promise.allSettled([
                     axios.get(`${apiUrl}/languages/getAll`, { headers }),
                     axios.get(`${apiUrl}/languageLevels/getAll`, { headers }),
-                    axios.get(`${apiUrl}/users/getAllTeachers`, { headers })
+                    axios.get(`${apiUrl}/users/getAllTeachers`, { headers }),
+                    axios.get(getCoursesUrl, { headers })
                 ]);
 
-                setLanguages(languagesRes?.data?.data ?? []);
-                setLanguageLevels(levelsRes?.data?.data ?? []);
-                setTeachers(teachersRes?.data?.data ?? []);
+                if (languagesRes.status === 'fulfilled') {
+                    setLanguages(languagesRes.value.data.data);
+                } else {
+                    console.warn('Failed to fetch course language:', languagesRes.reason);
+                }
+
+                if (levelsRes.status === 'fulfilled') {
+                    setLanguageLevels(levelsRes.value.data.data);
+                } else {
+                    console.warn('Failed to fetch course levels:', levelsRes.reason);
+                }
+
+                if (teachersRes.status === 'fulfilled') {
+                    setTeachers(teachersRes.value.data.data);
+                } else {
+                    console.warn('Failed to fetch teachers:', teachersRes.reason);
+                }
+
+                if (coursesRes.status === 'fulfilled') {
+                    setCourses(coursesRes.value.data.data);
+                } else {
+                    console.warn('Failed to fetch courses:', coursesRes.reason);
+                }
+
             } catch (error: any) {
                 console.error("Error fetching initial data:", error?.message);
             }
@@ -40,7 +65,7 @@ const CoursesManagement = () => {
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">Courses Management</h2>
-                <CreateCourse languages={languages} languageLevels={languageLevels} teachers={teachers}/>
+                <CreateCourse languages={languages} languageLevels={languageLevels} teachers={teachers} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

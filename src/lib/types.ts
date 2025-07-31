@@ -1,4 +1,9 @@
-
+export type ResultResponse<T> ={
+    statusCode: Number;
+    data: T;
+    success: boolean;
+    message: string;
+}
 
 // Authentication Types
 export interface User {
@@ -86,5 +91,16 @@ export type Course = {
   createdAt: string; // or Date if parsed
   updatedAt: string; // or Date if parsed
 };
+
+export type CreateCourseBody = {
+  title: string;
+  code: string;
+  description: string;
+  language_id: string;
+  language_level: string;
+  teacherId: string;
+  duration: number; // converted from string to number
+};
+
 
 

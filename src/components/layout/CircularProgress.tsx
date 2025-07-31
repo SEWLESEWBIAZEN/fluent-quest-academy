@@ -1,6 +1,3 @@
-import React from 'react'
-import OrbitProgress from "react-loading-indicators/OrbitProgress";
-
 const CircularProgress = ({full}:{full?:boolean}) => {
   return (
     <div className={`flex justify-center items-center  ${full ? 'h-screen' : ''}`}>

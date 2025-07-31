@@ -41,7 +41,7 @@ const UserProfilePage = () => {
   if (loading || authLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <CircularProgress />
+        <CircularProgress full/>
       </div>
     );
   }

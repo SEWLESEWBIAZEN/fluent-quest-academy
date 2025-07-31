@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCourse } from '@/contexts/CourseContext';
@@ -9,7 +8,7 @@ const PopularCoursesSection: React.FC = () => {
   const { courses } = useCourse();
   
   // Take just the first 3 courses for the homepage
-  const popularCourses = courses.slice(0, 3);
+  const popularCourses = courses?.slice(0, 3);
   
   return (
     <section className="py-16 bg-background">
@@ -25,8 +24,8 @@ const PopularCoursesSection: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {popularCourses.map((course) => (
-            <CourseCard key={course._id} course={course} />
+          {popularCourses?.map((course) => (
+            <CourseCard key={course?._id} course={course} />
           ))}
         </div>
       </div>

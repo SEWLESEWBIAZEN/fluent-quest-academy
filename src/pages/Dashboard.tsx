@@ -12,7 +12,7 @@ import CircularProgress from '@/components/layout/CircularProgress';
 const Dashboard: React.FC = () => {
   const { user,isLoading } = useAuth();
   const { courses, getUserProgress } = useCourse();
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) return <CircularProgress full/>;
 
     // Redirect to login if not authenticated
   if (!user && !isLoading) {
@@ -21,9 +21,7 @@ const Dashboard: React.FC = () => {
     
   if (!user?.registered) {
     return <Navigate to="/register/complete" replace />;
-  }
-
-  
+  }  
 
   // Get enrolled courses
   const enrolledCourses =[]
@@ -118,7 +116,7 @@ const Dashboard: React.FC = () => {
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">Recommended For You</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {courses.slice(0, 4).map((course) => (
+            {courses?.slice(0, 4)?.map((course) => (
               <CourseCard key={course._id} course={course} />
             ))}
           </div>

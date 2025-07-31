@@ -3,7 +3,16 @@ import { Progress } from '@/components/ui/progress'
 import { Course } from '@/lib/types'
 import ReactCountryFlag from 'react-country-flag'
 
-const CourseIntro = ({ course, courseLanguage, courseLevel, isEnrolled, progress, handleEnroll }:{course: Course, courseLanguage: any, courseLevel: any, isEnrolled: boolean, progress: number, handleEnroll: () => void}) => {
+interface CourseIntroProps {
+    course: Course;
+    courseLanguage: any;
+    courseLevel: any;
+    isEnrolled: boolean;
+    progress: number;
+    handleEnroll: () => void;
+}
+
+const CourseIntro: React.FC<CourseIntroProps> = ({ course, courseLanguage, courseLevel, isEnrolled, progress, handleEnroll }) => {
     return (
         <div className="md:col-span-2">
 
@@ -19,7 +28,7 @@ const CourseIntro = ({ course, courseLanguage, courseLevel, isEnrolled, progress
                 />
                 <span className="ms-2 text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
                 <div className={`ml-3 language-level-badge language-level-${courseLevel?.name?.toLowerCase()}`}>
-                    {courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1)}
+                    {courseLevel?.name && <>(courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1).toString())</>}
                 </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">{course.title}</h1>
