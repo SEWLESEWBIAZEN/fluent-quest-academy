@@ -58,10 +58,12 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setTeachers(teachersRes?.data);
 
       //if error fetching data, you can handle it here
-      if (!languagesRes.success) toast({ title: "Error Occured", description: languagesRes.message, variant: "destructive" });
-      if (!coursesRes.success) toast({ title: "Error Occured", description: coursesRes.message, variant: "destructive" });
-      if (!levelsRes.success) toast({ title: "Error Occured", description: levelsRes.message, variant: "destructive" });
-      if (!teachersRes.success) toast({ title: "Error Occured", description: teachersRes.message, variant: "destructive" });
+      if(user){
+        if (!languagesRes.success) toast({ title: "Error Occured", description: languagesRes.message, variant: "destructive" });
+        if (!coursesRes.success) toast({ title: "Error Occured", description: coursesRes.message, variant: "destructive" });
+        if (!levelsRes.success) toast({ title: "Error Occured", description: levelsRes.message, variant: "destructive" });
+        if (!teachersRes.success) toast({ title: "Error Occured", description: teachersRes.message, variant: "destructive" });
+      }
     };
 
     fetchData();
