@@ -5,12 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/contexts/AuthContext'
 import { Lesson } from '@/contexts/CourseContext'
 import { Course } from '@/lib/types'
-import { Settings , Lock} from 'lucide-react'
-import React from 'react'
+import { Settings, Lock, Pen, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const CourseTabs = ({ courseLessons, course ,isEnrolled}:{ courseLessons: Lesson[], course: Course, isEnrolled: boolean }) => {
-    const {user} =useAuth()
+const CourseTabs = ({ courseLessons, course, isEnrolled }: { courseLessons: Lesson[], course: Course, isEnrolled: boolean }) => {
+    const { user } = useAuth()
     return (
         <Tabs defaultValue="lessons" className="w-full">
             <TabsList>
@@ -21,6 +20,7 @@ const CourseTabs = ({ courseLessons, course ,isEnrolled}:{ courseLessons: Lesson
 
             </TabsList>
             <TabsContent value="lessons" className="pt-6">
+                <div>Add lesson</div>
                 <div className="space-y-4">
                     {courseLessons?.length > 0 ? (
                         courseLessons?.map((lesson) => (
@@ -38,12 +38,28 @@ const CourseTabs = ({ courseLessons, course ,isEnrolled}:{ courseLessons: Lesson
                                                 </p>
                                             </div>
                                         </div>
-                                        <div>
-                                            {isEnrolled ? (
-                                                <Button variant="outline" size="sm">Start</Button>
-                                            ) : (
-                                                <Button variant="outline" size="sm" disabled><Lock /></Button>
-                                            )}
+                                        <div className='flex items-center gap-2'>
+                                            <span onClick={
+                                                (e) => {
+                                                    e.preventDefault(); // Prevent link navigation
+                                                    e.stopPropagation(); // Stop event bubbling up to Link
+                                                }} className={`flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md border border-slate-200 dark:bg-transparent`}>
+
+                                                {/* update the lesson */}
+                                                <div><Pen className='h-5 w-5 text-gray-400 hover:text-gray-600' />
+                                                </div>
+
+                                                {/* delete the lesson */}
+                                                <div><Trash2 className='h-5 w-5 text-gray-400 hover:text-gray-600' />
+                                                </div>
+                                            </span>
+                                            <div>
+                                                {isEnrolled ? (
+                                                    <Button variant="outline" size="sm">Start</Button>
+                                                ) : (
+                                                    <Button variant="outline" size="sm" disabled><Lock /></Button>
+                                                )}
+                                            </div>
                                         </div>
                                     </CardContent>
                                 </Link>

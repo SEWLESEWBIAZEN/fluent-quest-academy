@@ -85,7 +85,7 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
     }
 
     return () => {
-      editorRef.current?.destroy();
+      editorRef.current?.destroy?.();
       editorRef.current = null;
     };
   }, [content]);

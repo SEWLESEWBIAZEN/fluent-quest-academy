@@ -83,6 +83,7 @@ const LessonDetailPage = () => {
                     <div className="flex h-[25rem] md:h-[30rem] xl:h-[40rem] overflow-hidden rounded-lg  bg-white dark:bg-transparent shadow-xs">
                         {/* Sidebar navigation */}
                         <SidebarNavigation
+                            lessonId={lessonIdValue}
                             lessons={lessons}
                             setLoading={setLoading}
                             setLessonIdValue={setLessonIdValue}
