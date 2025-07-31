@@ -9,7 +9,12 @@ import { UserRole } from '@/lib/types'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from '@/hooks/use-toast'
 
-const UserRegistrationForm = ({ user }: { user: any }) => {
+interface UserRegistrationFormProps {
+  user: any; // Adjust type as necessary
+
+}
+
+const UserRegistrationForm: React.FC<UserRegistrationFormProps> = ({ user }) => {
   const [name, setName] = useState("")
   const [username, setUsername] = useState("")
   const [phonenumber, setPhonenumber] = useState("")

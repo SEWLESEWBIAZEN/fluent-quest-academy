@@ -9,7 +9,11 @@ import { apiUrl } from '@/lib/envService'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from '../ui/use-toast'
 
-const UserUpdateForm = ({ userData }: { userData: UserData }) => {
+interface UserUpdateFormProps {
+  userData: UserData;
+}
+
+const UserUpdateForm: React.FC<UserUpdateFormProps> = ({ userData }) => {
 
     const [name, setName] = useState(userData?.name ?? "")
     const [email, setEmail] = useState(userData?.email ?? "")

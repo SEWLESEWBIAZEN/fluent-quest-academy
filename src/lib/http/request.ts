@@ -20,10 +20,11 @@ export interface Request<T = unknown> {
   };
   
     /** Progress callback for uploads */ 
-  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void;
+  // onUploadProgress?: (progressEvent: AxiosProgressEvent) => void;
 
   /** Progress callback for downloads */
-  onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void;
+  // onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void;
+  
 
   /** Custom function to validate response status */
   validateStatus?: (status: number) => boolean;

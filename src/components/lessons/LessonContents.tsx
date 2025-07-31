@@ -2,7 +2,11 @@ import { LessonContent } from '@/types/lessonContents'
 import { ReadOnlyViewer } from '../ui/ReadOnlyViewer'
 import CircularProgress from '../layout/CircularProgress'
 
-const LessonContents = ({lessonContents, loading}: {lessonContents: LessonContent[], loading: boolean}) => {
+interface LessonContentsProps {
+    lessonContents: LessonContent[];
+    loading: boolean;
+}
+const LessonContents: React.FC<LessonContentsProps> = ({ lessonContents, loading }) => {
     return (
         <main className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50 dark:bg-transparent">
             {lessonContents?.length ? (

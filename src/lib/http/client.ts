@@ -15,8 +15,8 @@ export async function sendRequest<TResponse = any, TBody = any>(
         responseType,
         signal,
         retry,
-        onUploadProgress,
-        onDownloadProgress,
+        // onUploadProgress,
+        // onDownloadProgress,
         validateStatus,
     } = request;
 
@@ -29,8 +29,9 @@ export async function sendRequest<TResponse = any, TBody = any>(
         timeout,
         responseType,
         signal,
-        onUploadProgress:  (progressEvent: AxiosProgressEvent) => onUploadProgress(progressEvent),
-        onDownloadProgress: (progressEvent: AxiosProgressEvent) => onDownloadProgress(progressEvent),
+        // onUploadProgress:  (progressEvent: AxiosProgressEvent) => onUploadProgress(progressEvent),
+        // onDownloadProgress: (progressEvent: AxiosProgressEvent) => onDownloadProgress(progressEvent),
+        
         validateStatus,
     };
 

@@ -2,7 +2,12 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const MobileSidebarToggleButton = ({ setIsMobileNavOpen, courseId, lessonId }: { setIsMobileNavOpen: (isOpen: boolean) => void, courseId: string, lessonId: string }) => {
+interface MobileSidebarToggleButtonProps {
+    setIsMobileNavOpen: (isOpen: boolean) => void;
+    courseId: string;
+    lessonId: string;
+}
+const MobileSidebarToggleButton: React.FC<MobileSidebarToggleButtonProps> = ({ setIsMobileNavOpen, courseId, lessonId }) => {
     return (
         <div className='w-full flex md:flex-1 justify-between md:justify-end'>
             <button

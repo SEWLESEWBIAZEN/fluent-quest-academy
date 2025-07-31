@@ -6,8 +6,12 @@ import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { redirect } from 'react-router-dom';
 
+interface DeleteCourseProps {
+    id: string;
+    accessToken: string;
+}
 
-const DeleteCourse = ({ id, accessToken }: { id: string, accessToken: string }) => {   
+const DeleteCourse: React.FC<DeleteCourseProps> = ({ id, accessToken }) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 

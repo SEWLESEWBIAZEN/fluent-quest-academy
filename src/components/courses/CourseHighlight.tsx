@@ -1,5 +1,10 @@
 
-const CourseHighlight = ({ course, courseLanguage }: { course: any, courseLanguage: any }) => {
+interface CourseHighlightProps {
+    course: any;
+    courseLanguage: any;
+}
+
+const CourseHighlight: React.FC<CourseHighlightProps> = ({ course, courseLanguage }) => {
     const courseThumbnail = course?.thumbnail === "null" ? "/placeholder.svg" : course?.thumbnail;
     return (
         <div className="md:col-span-1">

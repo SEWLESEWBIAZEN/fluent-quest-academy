@@ -1,9 +1,16 @@
 import { Lesson } from '@/types/lesson'
-import React from 'react'
 
-const LessonsNavBarMobile = (
-    { isMobileNavOpen, setIsMobileNavOpen, lessons, setLessonIdValue, setLoading }:
-    {isMobileNavOpen: boolean, setIsMobileNavOpen: (open: boolean) => void, lessons: Lesson[], setLessonIdValue: (id: string) => void, setLoading: (loading: boolean) => void}) => {
+interface LessonsNavBarMobileProps {
+    isMobileNavOpen: boolean;
+    setIsMobileNavOpen: (open: boolean) => void;
+    lessons: Lesson[];
+    setLessonIdValue: (id: string) => void;
+    setLoading: (loading: boolean) => void;
+}
+
+const LessonsNavBarMobile: React.FC<LessonsNavBarMobileProps> = (
+    { isMobileNavOpen, setIsMobileNavOpen, lessons, setLessonIdValue, setLoading }
+) => {
     return (
         <div>
             {/* Mobile Sidebar Drawer */}

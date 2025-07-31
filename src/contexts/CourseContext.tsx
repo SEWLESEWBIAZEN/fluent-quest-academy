@@ -7,7 +7,6 @@ import languageLevelsData from '../lib/data/language-levels'
 import teachersData from '../lib/data/users'
 import { toast } from "@/hooks/use-toast";
 
-
 export interface Lesson {
   _id: string;
   courseId: string;
@@ -27,6 +26,7 @@ interface CourseContextType {
   getCoursesByLanguage: (languageId: string) => Course[];
   getCoursesByLevel: (level: string) => Course[];
   getCourseById: (id: string) => Course | undefined;
+  teachers: UserData[];
 }
 
 // Create the context
@@ -48,7 +48,7 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const authToken = user?.accessToken ?? "";
       const [languagesRes, coursesRes, levelsRes, teachersRes] = await Promise.all([
         languagesData.getAll({ authToken }),
-        coursesData.getAll({ authToken }),
+        user?.role === 'admin' ? coursesData.getAll({ authToken }) : coursesData.getByInstructor({ authToken, instructorId: user?.userId }),
         languageLevelsData.getAll({ authToken }),
         teachersData.getAll({ authToken }),
       ]);
@@ -65,7 +65,6 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         if (!teachersRes.success) toast({ title: "Error Occured", description: teachersRes.message, variant: "destructive" });
       }
     };
-
     fetchData();
   }, [user]);
 
@@ -100,6 +99,7 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         getCoursesByLanguage,
         getCoursesByLevel,
         getCourseById,
+        teachers
       }}
     >
       {children}

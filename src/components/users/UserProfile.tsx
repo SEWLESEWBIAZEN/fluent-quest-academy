@@ -5,7 +5,11 @@ import UpdateAvatar from "./UpdateAvatar";
 import { useAuth } from "../../contexts/AuthContext";
 import DeleteUser from "./DeleteUser";
 
-const UserProfile = ({ user }: { user: UserData }) => {
+interface UserProfileProps {
+    user: UserData;
+}
+
+const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 
 const {user:usera} = useAuth()
 const ids={dbid:usera?.userId,fbid:usera?.id}

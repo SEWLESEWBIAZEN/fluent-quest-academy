@@ -8,7 +8,13 @@ import { Course } from '@/lib/types'
 import { Settings, Lock, Pen, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const CourseTabs = ({ courseLessons, course, isEnrolled }: { courseLessons: Lesson[], course: Course, isEnrolled: boolean }) => {
+interface CourseTabsProps {
+    courseLessons: Lesson[];
+    course: Course;
+    isEnrolled: boolean;
+}
+
+const CourseTabs: React.FC<CourseTabsProps> = ({ courseLessons, course, isEnrolled }) => {
     const { user } = useAuth()
     return (
         <Tabs defaultValue="lessons" className="w-full">

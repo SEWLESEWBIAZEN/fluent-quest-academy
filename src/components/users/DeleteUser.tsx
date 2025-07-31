@@ -6,7 +6,16 @@ import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
 import { logout } from '@/config/firebase/authenticate';
 
-const DeleteUser = ({ ids, accessToken }: { ids: { dbid: string, fbid: string }, accessToken: string }) => {
+interface IDs{
+    dbid: string;
+    fbid: string;
+}
+interface DeleteUserProps {
+    ids: IDs;
+    accessToken: string;
+}
+
+const DeleteUser: React.FC<DeleteUserProps> = ({ ids, accessToken }) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 

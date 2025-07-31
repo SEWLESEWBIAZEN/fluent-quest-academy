@@ -11,7 +11,13 @@ import { apiUrl } from '@/lib/envService';
 import { Language, LanguageLevel, UserData } from '@/lib/types';
 import { toast } from '@/hooks/use-toast';
 
-const CreateCourse = ({ languages, languageLevels, teachers }: { languages: Language[], languageLevels: LanguageLevel[], teachers: UserData[] }) => {
+interface CreateCourseProps{
+    languages: Language[];
+    languageLevels: LanguageLevel[];
+    teachers: UserData[];
+}
+
+const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, teachers }) => {
 
     const { user } = useAuth()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,7 +34,6 @@ const CreateCourse = ({ languages, languageLevels, teachers }: { languages: Lang
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('title', title);
         formData.append('code', courseCode);
@@ -38,8 +43,6 @@ const CreateCourse = ({ languages, languageLevels, teachers }: { languages: Lang
         formData.append('thumbnail', courseThumbnail);
         formData.append('duration', courseDuration.toString());
         formData.append('teacherId', instructorId);
-        // Call your API to create the course        
-
         try {
             const response = await axios.post(`${apiUrl}/courses/create`, formData, {
                 headers: {
@@ -65,14 +68,14 @@ const CreateCourse = ({ languages, languageLevels, teachers }: { languages: Lang
                 })
             }
         }
-        catch (error:any) {      
+        catch (error: any) {
             toast({
-                title: error?.message|| "Error Occured",
+                title: error?.message || "Error Occured",
                 description: error?.response?.data?.message || error?.message || "Failed to create course.",
                 variant: "destructive"
             })
         }
-       
+
     }
 
     return (
