@@ -1,12 +1,16 @@
 import { Course } from '@/lib/types'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
+import { useCourse } from '@/contexts/CourseContext';
+import EditCourse from './EditCourse';
 
 interface ManageCourseProps {
     course: Course;
 }
 
 const ManageCourse: React.FC<ManageCourseProps> = ({ course }) => {
+    const {languages, languageLevels } = useCourse();
+
     return (
         <Card>
             <CardHeader className="pb-2">
@@ -25,7 +29,7 @@ const ManageCourse: React.FC<ManageCourseProps> = ({ course }) => {
                     </div>
                 </div>
                 <div className="flex space-x-2 mt-4">
-                    <Button variant="outline" size="sm">Edit</Button>
+                    <EditCourse course={course}  languages={languages} languageLevels={languageLevels} />
                     <Button variant="outline" size="sm">View Analytics</Button>
                 </div>
             </CardContent>

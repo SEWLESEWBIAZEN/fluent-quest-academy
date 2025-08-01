@@ -8,47 +8,42 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
 import { apiUrl } from '@/lib/envService';
-import { Language, LanguageLevel, UserData } from '@/lib/types';
+import { Course, Language, LanguageLevel } from '@/lib/types';
 import { toast } from '@/hooks/use-toast';
 
-interface CreateCourseProps{
+interface EditCourseProps {
     languages: Language[];
-    languageLevels: LanguageLevel[];
-    teachers: UserData[];
+    languageLevels: LanguageLevel[];  
+    course: Course;
 }
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, teachers }) => {
-
+const EditCourse: React.FC<EditCourseProps> = ({ languages, languageLevels, course }) => {
     const { user } = useAuth()
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [title, setTitle] = useState('');
-    const [courseCode, setCourseCode] = useState('');
-    const [courseDescription, setCourseDescription] = useState('');
-    const [courseLevel, setCourseLevel] = useState<string>("select");
-    const [language, setLanguage] = useState<string>("select");
-    const [courseThumbnail, setCourseThumbnail] = useState<File | null>(null);
-    const [courseDuration, setCourseDuration] = useState(0);
-    const [courseInstructor, setCourseInstructor] = useState('select');
-    const [isLoading, setIsLoading] = useState(false);
-
-    const instructorId = user?.role === 'teacher' ? user?.userId : courseInstructor;
+    const [title, setTitle] = useState(course?.title ?? '');
+    const [courseCode, setCourseCode] = useState(course?.code ?? '');
+    const [courseDescription, setCourseDescription] = useState(course?.description ?? '');
+    const [courseLevel, setCourseLevel] = useState<string>(course?.language_level?? "select");
+    const [language, setLanguage] = useState<string>(course?.language_id ?? "select");
+    const [courseDuration, setCourseDuration] = useState<number>(course?.duration ?? 0);   
+    const [isLoading, setIsLoading] = useState(false);  
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         setIsLoading(true);
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('code', courseCode);
-        formData.append('description', courseDescription);
-        formData.append('language_level', courseLevel);
-        formData.append('language_id', language);
-        formData.append('thumbnail', courseThumbnail);
-        formData.append('duration', courseDuration.toString());
-        formData.append('teacherId', instructorId);
+        e.preventDefault();        
+        const updateCourseData = {
+            title,
+            code: courseCode,
+            description: courseDescription,
+            language_level: courseLevel,
+            language_id: language,
+            duration: courseDuration            
+        }
+
         try {
-            const response = await axios.post(`${apiUrl}/courses/create`, formData, {
+            const response = await axios.put(`${apiUrl}/courses/update/${course._id}`, updateCourseData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     'authToken': user?.accessToken ?? ""
                 }
             })
@@ -56,7 +51,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
             if (response?.data?.success) {
                 toast({
                     title: "Success",
-                    description: response?.data?.message ?? "Course created successfully!",
+                    description: response?.data?.message ?? "Course updated successfully!",
                     variant: "primary"
                 })
 
@@ -65,7 +60,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
             else {
                 toast({
                     title: "Error Occured",
-                    description: response?.data?.message ?? "Failed to create course.",
+                    description: response?.data?.message ?? "Failed to update course.",
                     variant: "destructive"
                 })
             }
@@ -80,15 +75,14 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
         finally {
             setIsLoading(false);
         }
-
     }
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild><Button>Create New Course</Button></DialogTrigger>
+            <DialogTrigger asChild><Button variant="outline" size="sm">Edit</Button></DialogTrigger>
             <DialogContent className='max-w-[400px] md:max-w-4xl' >
-                <DialogTitle className="text-lg font-semibold">Create New Course</DialogTitle>
-                <DialogDescription className="text-sm text-gray-500">Fill in the details below to create a new course.</DialogDescription>
+                <DialogTitle className="text-lg font-semibold">Edit Course</DialogTitle>
+                <DialogDescription className="text-sm text-gray-500">Fill in the details below to edit the course.</DialogDescription>
                 <form className='flex flex-col space-y-8 p-4 rounded-md' onSubmit={handleSubmit}>
                     <div className='flex flex-col md:flex-row w-full gap-2'>
                         <div className='flex-1'>
@@ -170,27 +164,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
                             </Select>
                         </div>
                     </div>
-                    <div className='flex flex-col md:flex-row w-full gap-2'>
-                        {user?.role === "admin" && (
-                            <div className='flex-1'>
-                                <Label htmlFor='teacher'>
-                                    Teacher
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Select name="teacher" required value={courseInstructor} onValueChange={setCourseInstructor}>
-                                    <SelectTrigger className='flex justify-end mr-2'>
-                                        <SelectValue placeholder={courseInstructor ?? "Select a teacher"} />
-                                    </SelectTrigger>
-                                    <SelectContent defaultValue={courseInstructor}>
-                                        <SelectItem value="select">---Select a teacher---</SelectItem>
-                                        {teachers?.map((teacher) => (
-                                            <SelectItem key={teacher?._id} value={teacher?._id}>
-                                                {teacher?.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>)}
+                    <div className='flex flex-col md:flex-row w-full gap-2'>                       
                         <div className='flex-1'>
                             <Label htmlFor='courseDuration'>
                                 Duration
@@ -204,20 +178,10 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
                                 value={courseDuration}
                                 onChange={(e) => setCourseDuration(Number(e.target.value))} />
                         </div>
-                        <div className='flex-1'>
-                            <Label htmlFor="courseImage">
-                                Course Thumbnail
-                                <span className='text-red-500'>*</span>
-                            </Label>
-                            <Input type="file"
-                                id="courseImage"
-                                name="courseImage"
-                                accept="image/*"
-                                onChange={(e) => setCourseThumbnail(e.target.files[0])} />
-                        </div>
+
                     </div>
                     <div className='mt-4 flex justify-end'>
-                        <Button type="submit" disabled={isLoading}>{isLoading ? "Creating..." : "Create Course"}</Button>
+                        <Button type="submit" disabled={isLoading}>{isLoading ? "Updating..." : "Update Course"}</Button>
                     </div>
                 </form>
             </DialogContent>
@@ -225,4 +189,4 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ languages, languageLevels, 
     )
 }
 
-export default CreateCourse
+export default EditCourse
