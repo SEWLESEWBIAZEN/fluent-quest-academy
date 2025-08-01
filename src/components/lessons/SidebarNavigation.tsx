@@ -6,17 +6,19 @@ interface SidebarNavigationProps {
     lessons: Lesson[],
     setLoading: (loading: boolean) => void,
     setLessonIdValue: (id: string) => void,
-    lessonId: string
+    lessonId: string;
+   setRefetch?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     lessons,
     setLoading,
     setLessonIdValue,
-    lessonId
+    lessonId,
+    setRefetch
 }) => {
 
-const [isOpen, setIsOpen] = useState(true);    
+    const [isOpen, setIsOpen] = useState(true);
     return (
         <nav
             className="sidebar hidden md:block w-60 md:w-72 overflow-y-auto border-r border-gray-200 dark:border-gray-700 p-4"
@@ -44,12 +46,13 @@ const [isOpen, setIsOpen] = useState(true);
                         {lessons?.map((lesson: Lesson) => (
                             <li
                                 key={lesson._id}
-                                className={`flex items-center cursor-pointer rounded-md p-2 text-brand-900 dark:text-brand-700 hover:bg-brand-100 dark:hover:bg-brand-800 ${lessonId === lesson._id ? 'bg-brand-100 dark:bg-slate-800' : ''}`}
+                                className={`flex items-center cursor-pointer rounded-md p-2 text-brand-900 dark:text-brand-700 hover:bg-brand-100 dark:hover:bg-brand-800 ${lessonId === lesson._id ? 'bg-brand-100 dark:bg-slate-800 disabled' : ''}`}
                                 tabIndex={0}
                                 role="button"
                                 onClick={() => {
                                     setLoading(true);
                                     setLessonIdValue(lesson._id);
+                                    setRefetch((prev:boolean) => !prev);
                                 }}
                             >
                                 <span className="mr-2 text-lg">

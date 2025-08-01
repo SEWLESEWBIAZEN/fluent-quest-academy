@@ -41,6 +41,9 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           attaches: {
             class: AttachesTool,
           },
+          warning: {
+            class: Warning,
+          },
           toggle: {
             class: ToggleBlock,
           },

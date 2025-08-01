@@ -27,6 +27,8 @@ const LessonDetailPage = () => {
     const { courseId, lessonId } = useParams();
     const [lessonIdValue, setLessonIdValue] = useState<string | null>(lessonId);
 
+    const [refetch, setRefetch] = useState(false);
+
     useEffect(() => {
         // Fetch lesson details using lessonId
         const fetchLessonContents = async () => {
@@ -50,13 +52,14 @@ const LessonDetailPage = () => {
         };
 
         fetchLessonContents();
-    }, [lessonIdValue]);
+    }, [lessonIdValue, refetch]);
 
 
     if (!user) {
         return <Navigate to="/login" replace />;
     }
 
+    
     return (
         <Layout>
             <div className="container mx-auto px-2 py-2 ">
@@ -82,6 +85,7 @@ const LessonDetailPage = () => {
                         setIsMobileNavOpen={setIsMobileNavOpen}
                         courseId={courseId}
                         lessonId={lessonId}
+                        
                     />
 
                     <div className="flex h-[25rem] md:h-[30rem] xl:h-[40rem] overflow-hidden rounded-lg  bg-white dark:bg-transparent shadow-xs">
@@ -91,6 +95,7 @@ const LessonDetailPage = () => {
                             lessons={lessons}
                             setLoading={setLoading}
                             setLessonIdValue={setLessonIdValue}
+                            setRefetch={setRefetch}
                         />
 
                         <LessonsNavBarMobile

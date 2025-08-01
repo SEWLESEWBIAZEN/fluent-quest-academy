@@ -7,10 +7,11 @@ interface LessonContentsProps {
     loading: boolean;
 }
 const LessonContents: React.FC<LessonContentsProps> = ({ lessonContents, loading }) => {
+   
     return (
         <main className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50 dark:bg-transparent">
-            {lessonContents?.length ? (
-                lessonContents.map((content: LessonContent) => (
+            {lessonContents?.length > 0 ? (
+                lessonContents?.map((content: LessonContent) => (
                     <div key={content._id}>
                         {content.type === 'text' ? (
                             <p className="whitespace-pre-wrap text-gray-900 dark:text-gray-100">{content.value}</p>
@@ -19,13 +20,13 @@ const LessonContents: React.FC<LessonContentsProps> = ({ lessonContents, loading
                         )}
                     </div>
                 ))
-            ) : !loading ? (
-                <div className="w-full text-center rounded-2xl min-h-[100px] border border-dashed border-gray-300 dark:border-gray-600 pt-4 text-gray-500 dark:text-gray-400">
-                    No content available
-                </div>
-            ) : (
+            ) : loading ? (
                 <div className="flex justify-center">
                     <CircularProgress full={false} />
+                </div>
+            ) : (
+                <div className="w-full text-center rounded-2xl min-h-[100px] border border-dashed border-gray-300 dark:border-gray-600 pt-4 text-gray-500 dark:text-gray-400">
+                    No content available
                 </div>
             )}
         </main>

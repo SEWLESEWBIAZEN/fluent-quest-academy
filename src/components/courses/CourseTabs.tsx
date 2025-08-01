@@ -7,6 +7,7 @@ import { Lesson } from '@/contexts/CourseContext'
 import { Course } from '@/lib/types'
 import { Settings, Lock, Pen, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import CreateLesson from '../lessons/CreateLesson'
 
 interface CourseTabsProps {
     courseLessons: Lesson[];
@@ -26,8 +27,8 @@ const CourseTabs: React.FC<CourseTabsProps> = ({ courseLessons, course, isEnroll
 
             </TabsList>
             <TabsContent value="lessons" className="pt-6">
-                <div>Add lesson</div>
-                <div className="space-y-4">
+                <CreateLesson />
+                <div className="space-y-4 mt-4">
                     {courseLessons?.length > 0 ? (
                         courseLessons?.map((lesson) => (
                             <Card key={lesson?._id}>

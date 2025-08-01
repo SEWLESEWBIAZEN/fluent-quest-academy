@@ -61,7 +61,7 @@ const CourseIntro: React.FC<CourseIntroProps> = ({ course, courseLanguage, cours
             )}
 
             {!isEnrolled && (
-                <Button onClick={handleEnroll} size="lg" className="mb-6">
+                <Button onClick={handleEnroll} size="lg" className="mb-6" >
                     {course.price === 0 ? 'Enroll for Free' : `Enroll for $${course.price.toFixed(2)}`}
                 </Button>
             )}
