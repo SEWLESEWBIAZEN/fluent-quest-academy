@@ -15,7 +15,7 @@ const LessonContents: React.FC<LessonContentsProps> = ({ lessonContents, loading
                         {content.type === 'text' ? (
                             <p className="whitespace-pre-wrap text-gray-900 dark:text-gray-100">{content.value}</p>
                         ) : (
-                            <ReadOnlyViewer content={JSON.parse(content?.value ?? "")} />
+                            <ReadOnlyViewer key={content._id} content={JSON.parse(content?.value ?? "")} />
                         )}
                     </div>
                 ))

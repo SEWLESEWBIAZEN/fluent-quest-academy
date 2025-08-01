@@ -28,7 +28,7 @@ const CourseIntro: React.FC<CourseIntroProps> = ({ course, courseLanguage, cours
                 />
                 <span className="ms-2 text-lg text-gray-600 dark:text-gray-400">{courseLanguage?.name}</span>
                 <div className={`ml-3 language-level-badge language-level-${courseLevel?.name?.toLowerCase()}`}>
-                    {courseLevel?.name && <>(courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1).toString())</>}
+                    {courseLevel?.name && (courseLevel?.name?.charAt(0).toUpperCase() + courseLevel?.name?.slice(1).toString())}
                 </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-4">{course.title}</h1>

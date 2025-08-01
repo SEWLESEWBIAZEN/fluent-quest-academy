@@ -1,5 +1,3 @@
-// components/ui/ReadOnlyViewer.tsx
-
 import React, { useEffect, useRef } from 'react';
 import EditorJS, { OutputData } from '@editorjs/editorjs';
 import Header from '@editorjs/header';
@@ -26,34 +24,33 @@ type ReadOnlyViewerProps = {
   holderId?: string;
 };
 
-
 export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
   content
-
 }) => {
   const editorRef = useRef<EditorJS | null>(null);
+  const hasSubscribed = useRef(false);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!editorRef.current) {
       editorRef.current = new EditorJS({
-        holder: editorContainerRef.current,
+        holder: editorContainerRef.current!,
         readOnly: true,
         data: content,
         tools: {
           attaches: {
-            class: AttachesTool,            
+            class: AttachesTool,
           },
           toggle: {
             class: ToggleBlock,
           },
-          delimiter: Delimiter, 
+          delimiter: Delimiter,
           drawingTool: {
-            class: DrawingTool,           
+            class: DrawingTool,
           },
           title: Title,
           audio: {
-            class: AudioTool,            
+            class: AudioTool,
           },
           header: Header,
           linkTool: LinkTool,
@@ -61,7 +58,7 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           list: List,
           inlineCode: InlineCode,
           checklist: {
-            class: Checklist,            
+            class: Checklist,
           },
           embed: {
             class: Embed,
@@ -74,21 +71,25 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           },
           table: Table,
           quote: {
-            class: Quote,            
+            class: Quote,
           },
           image: SimpleImage,
         },
         onReady: () => {
           console.log('ReadOnly Viewer is ready');
+          hasSubscribed.current = true;
         }
       });
     }
 
     return () => {
-      editorRef.current?.destroy?.();
+      if (hasSubscribed.current) {
+        editorRef.current?.destroy?.();
+      }
       editorRef.current = null;
+      hasSubscribed.current = false;
     };
-  }, [content]);
+  }, []);
 
   return <div id="readonly-editor" className="m-0 p-0"
     style={{ margin: 0, padding: 0 }} ref={editorContainerRef} />;
