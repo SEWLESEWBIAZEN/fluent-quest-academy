@@ -57,6 +57,8 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setLanguageLevels(levelsRes?.data);
       setTeachers(teachersRes?.data);
 
+    
+
       //if error fetching data, you can handle it here
       if(user){
         if (!languagesRes.success) toast({ title: "Error Occured", description: languagesRes.message, variant: "destructive" });

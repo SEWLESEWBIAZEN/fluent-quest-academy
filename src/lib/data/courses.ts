@@ -14,13 +14,14 @@ export const getAll = async (requestHeaders: RequestHeaders): Promise<ResultResp
         responseType: "json",
     };
     try {
-        const response = await sendRequest<ResultResponse<Course[]>>(request);
+        const response = await sendRequest<ResultResponse<Course[]>>(request);        
         return formatResponse({
             statusCode: response?.data?.statusCode,
             data: response?.data?.data,
             success: response?.data?.success,
             message: response?.data?.message
         });
+
     } catch (error: any) {
         return formatResponse({
             statusCode: error?.response?.data?.statusCode,

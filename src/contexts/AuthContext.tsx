@@ -89,6 +89,7 @@ async function getRoleByEmail(email, token) {
   })
 
   userInfo = response?.data?.data || {}
+ 
   return userInfo
 }
 

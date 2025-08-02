@@ -46,7 +46,7 @@ function AddContent() {
       }
     }
     catch(err){
-      console.log(err)
+      
       toast({
         title: 'Error',
         description: 'Failed to create content',

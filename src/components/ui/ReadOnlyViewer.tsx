@@ -79,7 +79,7 @@ export const ReadOnlyViewer: React.FC<ReadOnlyViewerProps> = ({
           image: SimpleImage,
         },
         onReady: () => {
-          console.log('ReadOnly Viewer is ready');
+      
           hasSubscribed.current = true;
         }
       });
